@@ -27,42 +27,42 @@ msgctxt "@info:tooltip"
 msgid "Add Automatique Anti-Warping Spoon"
 msgstr ""
 
-#: TabPlus.py:
+#: SpoonAntiWarping.py:
 msgctxt "@info:title"
-msgid "Tab Plus"
+msgid "Spoon Anti-Warping"
 msgstr ""
 
-#: TabPlus.py:
+#: SpoonAntiWarping.py:
 msgctxt "@info:title"
-msgid "Warning ! Tab Anti Warping"
+msgid "Warning ! Spoon Anti-Warping"
 msgstr ""
 
-#: TabPlus.py:
+#: SpoonAntiWarping.py:
 msgctxt "@info:label"
 msgid "Info modification current profile '"
 msgstr ""
 
-#: TabPlus.py:
+#: SpoonAntiWarping.py:
 msgctxt "@info:label"
 msgid "' parameter\nNew value : "
 msgstr ""
 
-#: TabPlus.py:
+#: SpoonAntiWarping.py:
 msgctxt "@info:label"
 msgid "100%"
 msgstr ""
 
-#: TabPlus.py:
+#: SpoonAntiWarping.py:
 msgctxt "@info:label"
 msgid "Everywhere"
 msgstr ""
 
-#: TabPlus.py::
+#: SpoonAntiWarping.py::
 msgctxt "@label"
 msgid "Remove All"
 msgstr ""
 
-#: TabPlus.py::
+#: SpoonAntiWarping.py::
 msgctxt "@label"
 msgid "Remove Last"
 msgstr ""

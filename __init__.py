@@ -20,8 +20,8 @@ def getMetaData():
         
     return {
         "tool": {
-            "name": i18n_catalog.i18nc("@label", "Tab Plus"),
-            "description": i18n_catalog.i18nc("@info:tooltip", "Add Automatique Sprue"),
+            "name": i18n_catalog.i18nc("@label", "Spoon Anti-Warping"),
+            "description": i18n_catalog.i18nc("@info:tooltip", "Add Automatique Anti-Warping Spoon"),
             "icon": "tool_icon.svg",
             "tool_panel": QmlFile,
             "weight": 11
