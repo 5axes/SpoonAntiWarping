@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// Copyright (c) 2022 5@xes
+// Copyright (c) 2023 5@xes
 // 
 // proterties values
 //   "SSize"    : Tab Size in mm
@@ -22,7 +22,7 @@ Item
     id: base
     width: childrenRect.width
     height: childrenRect.height
-    UM.I18nCatalog { id: catalog; name: "tabplus"}
+    UM.I18nCatalog { id: catalog; name: "spoonantiwarping"}
 	
 	property string getlinkCurrent: "https://github.com/5axes/TabPlus/wiki"
 	property int localwidth:70
