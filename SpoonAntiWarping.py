@@ -390,9 +390,9 @@ class SpoonAntiWarping(Tool):
         else:
             adep=0
        
-       adepdeg = math.degrees(adep)
+        adepdeg = math.degrees(adep)
         
-        Logger.log('d', 'adep : ' + str(adep)) 
+        Logger.log('d', 'adep    : ' + str(adep)) 
         Logger.log('d', 'adepdeg : ' + str(adepdeg))
         
         rng = int(360 / nb)
@@ -643,8 +643,7 @@ class SpoonAntiWarping(Tool):
         except ValueError:
             return
         
-        #Logger.log('d', 's_value : ' + str(s_value)) 
-        self._Mesg2 = False        
+        #Logger.log('d', 's_value : ' + str(s_value))        
         self._UseLength = s_value
         self._preferences.setValue("spoon_anti_warping/s_length", s_value) 
 
@@ -660,11 +659,10 @@ class SpoonAntiWarping(Tool):
         """
  
         try:
-            s_value = float(SLength)
+            s_value = float(SWidth)
         except ValueError:
             return
         
-        #Logger.log('d', 's_value : ' + str(s_value)) 
-        self._Mesg2 = False        
+        #Logger.log('d', 's_value : ' + str(s_value))     
         self._UseWidth = s_value
         self._preferences.setValue("spoon_anti_warping/s_width", s_value) 
