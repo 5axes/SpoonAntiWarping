@@ -24,7 +24,6 @@ Item
     height: childrenRect.height
     UM.I18nCatalog { id: catalog; name: "spoonantiwarping"}
 	
-	property string getlinkCurrent: "https://github.com/5axes/TabPlus/wiki"
 	property int localwidth:70
 
 
@@ -161,21 +160,6 @@ Item
                 UM.ActiveTool.setProperty("NLayer", text)
             }
         }	
-
-		UM.SimpleButton
-		{
-			id: helpButton
-			width: UM.Theme.getSize("save_button_specs_icons").width
-			height: UM.Theme.getSize("save_button_specs_icons").height
-			iconSource: UM.Theme.getIcon("Help")
-			hoverColor: UM.Theme.getColor("small_button_text_hover")
-			color:  UM.Theme.getColor("small_button_text")
-			
-			onClicked:
-			{
-			Qt.openUrlExternally(getlinkCurrent)
-			}
-		}
 	}
 
 	Rectangle {

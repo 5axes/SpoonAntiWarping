@@ -295,9 +295,8 @@ class SpoonAntiWarping(Tool):
         _layer_h = (_layer_h_i * 1.2) + (_layer_height * (self._Nb_Layer -1) )
         _line_w = _line_w * 1.2 
         
-        # Cylinder creation Diameter , Increment angle 10°, length, layer_height_0*1.2
-        mesh = self._createSpoon(self._UseSize,10,_long,_layer_h)
-        
+        # Spoon creation Diameter , Length, Width, Increment angle 10°, length, layer_height_0*1.2
+        mesh = self._createSpoon(self._UseSize,self._UseLength,self._UseWidth, 10,_long,_layer_h)
         
         node.setMeshData(mesh.build())
 
@@ -379,7 +378,7 @@ class SpoonAntiWarping(Tool):
  
         
     # Cylinder creation
-    def _createSpoon(self, size, nb , lg, He):   
+    def _createSpoon(self, size , length , width , nb , lg, He):   
         mesh = MeshBuilder()
         # Per-vertex normals require duplication of vertices
         r = size / 2
