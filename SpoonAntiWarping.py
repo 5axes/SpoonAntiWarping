@@ -296,7 +296,7 @@ class SpoonAntiWarping(Tool):
         _line_w = _line_w * 1.2 
         
         # Cylinder creation Diameter , Increment angle 10°, length, layer_height_0*1.2
-        mesh = self._createPastille(self._UseSize,10,_long,_layer_h)
+        mesh = self._createSpoon(self._UseSize,10,_long,_layer_h)
         
         
         node.setMeshData(mesh.build())
@@ -308,6 +308,12 @@ class SpoonAntiWarping(Tool):
         stack = node.callDecoration("getStack") # created by SettingOverrideDecorator that is automatically added to CuraSceneNode
         settings = stack.getTop()
 
+        definition = stack.getSettingDefinition("meshfix_union_all")
+        new_instance = SettingInstance(definition, settings)
+        new_instance.setProperty("value", False)
+        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+        settings.addInstance(new_instance)
+        
         definition = stack.getSettingDefinition("spoon_mesh")
         new_instance = SettingInstance(definition, settings)
         new_instance.setProperty("value", True)
@@ -373,7 +379,7 @@ class SpoonAntiWarping(Tool):
  
         
     # Cylinder creation
-    def _createPastille(self, size, nb , lg, He):   
+    def _createSpoon(self, size, nb , lg, He):   
         mesh = MeshBuilder()
         # Per-vertex normals require duplication of vertices
         r = size / 2

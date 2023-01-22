@@ -161,13 +161,6 @@ Item
                 UM.ActiveTool.setProperty("NLayer", text)
             }
         }	
-		UM.CheckBox
-		{
-			id: useCapsuleCheckbox
-			text: catalog.i18nc("@option:check","Define as Capsule")
-			checked: UM.ActiveTool.properties.getValue("SCapsule")
-			onClicked: UM.ActiveTool.setProperty("SCapsule", checked)
-		}
 
 		UM.SimpleButton
 		{
