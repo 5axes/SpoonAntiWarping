@@ -74,7 +74,12 @@ msgstr ""
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
-msgid "X/Y Distance"
+msgid "Spoon Length"
+msgstr ""
+
+#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+msgctxt "@label"
+msgid "Spoon Width"
 msgstr ""
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
@@ -85,14 +90,4 @@ msgstr ""
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
 msgid "Automatic Addition"
-msgstr ""
-
-#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
-msgctxt "@option:check"
-msgid "Define as Capsule"
-msgstr ""
-
-#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
-msgctxt "@option:check"
-msgid "Set On Adhesion Area"
 msgstr ""

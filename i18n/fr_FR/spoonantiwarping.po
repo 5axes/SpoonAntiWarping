@@ -89,12 +89,3 @@ msgctxt "@label"
 msgid "Automatic Addition"
 msgstr "Ajout automatique"
 
-#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
-msgctxt "@option:check"
-msgid "Define as Capsule"
-msgstr "Définir comme Capsule"
-
-#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
-msgctxt "@option:check"
-msgid "Set On Adhesion Area"
-msgstr "Créer sur la Zone d'adhérence"

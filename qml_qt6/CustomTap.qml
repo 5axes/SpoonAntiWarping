@@ -3,9 +3,9 @@
 // 
 // proterties values
 //   "SSize"    : Tab Size in mm
-//   "SOffset"  : Offset set on Tab in mm
+//   "SLength"  : Length set for Tab in mm
+//   "SWidth"   : Width set for Tab in mm
 //   "SCapsule" : Define as capsule
-//   "SArea" 	: Set on Adhesion Area
 //   "NLayer"   : Number of layer
 //   "SMsg"     : Text for the Remove All Button
 //
@@ -74,7 +74,7 @@ Item
         Label
         {
             height: UM.Theme.getSize("setting_control").height
-            text: catalog.i18nc("@label", "X/Y Distance")
+            text: catalog.i18nc("@label", "Spoon Length")
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
@@ -84,11 +84,11 @@ Item
 
 		UM.TextFieldWithUnit
         {
-            id: offsetTextField
+            id: lengthTextField
             width: localwidth
             height: UM.Theme.getSize("setting_control").height
             unit: "mm"
-            text: UM.ActiveTool.properties.getValue("SOffset")
+            text: UM.ActiveTool.properties.getValue("SLength")
             validator: DoubleValidator
             {
                 decimals: 3
@@ -98,9 +98,40 @@ Item
             onEditingFinished:
             {
                 var modified_text = text.replace(",", ".") // User convenience. We use dots for decimal values
-                UM.ActiveTool.setProperty("SOffset", modified_text)
+                UM.ActiveTool.setProperty("SLength", modified_text)
             }
         }
+
+        Label
+        {
+            height: UM.Theme.getSize("setting_control").height
+            text: catalog.i18nc("@label", "Spoon width")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
+            width: Math.ceil(contentWidth) //Make sure that the grid cells have an integer width.
+        }
+
+		UM.TextFieldWithUnit
+        {
+            id: widthTextField
+            width: localwidth
+            height: UM.Theme.getSize("setting_control").height
+            unit: "mm"
+            text: UM.ActiveTool.properties.getValue("SWidth")
+            validator: DoubleValidator
+            {
+                decimals: 3
+                locale: "en_US"
+            }
+
+            onEditingFinished:
+            {
+                var modified_text = text.replace(",", ".") // User convenience. We use dots for decimal values
+                UM.ActiveTool.setProperty("SWidth", modified_text)
+            }
+        }		
 		
         Label
         {
@@ -198,14 +229,5 @@ Item
 		onClicked: UM.ActiveTool.triggerAction("addAutoSupportMesh")
 	}
 	
-
-	UM.CheckBox
-	{
-		id: useAreaCheckbox
-		anchors.top: bottomRect.bottom
-		text: catalog.i18nc("@option:check","Set On Adhesion Area")
-		checked: UM.ActiveTool.properties.getValue("SArea")
-		onClicked: UM.ActiveTool.setProperty("SArea", checked)
-	}
 
 }

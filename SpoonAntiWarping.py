@@ -1,13 +1,12 @@
 #--------------------------------------------------------------------------------------------
-# Initial Copyright(c) 2018 Ultimaker B.V.
-# Copyright (c) 2023 5axes
+# Copyright (c) 2023 5@xes
 #--------------------------------------------------------------------------------------------
-# Based on the SupportBlocker plugin by Ultimaker B.V., and licensed under LGPLv3 or higher.
+# Based on the TabPlus plugin by 5@xes, and licensed under LGPLv3 or higher.
 #
-#  https://github.com/Ultimaker/Cura/tree/master/plugins/SupportEraser
+#  https://github.com/5axes/TabPlus
 #
 # All modification 5@xes
-# First release  19-01-2023  First proof of concept
+# First release  22-01-2023  First proof of concept
 #------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
@@ -32,6 +31,12 @@ from UM.Event import Event, MouseEvent
 from UM.Mesh.MeshBuilder import MeshBuilder
 
 from cura.PickingPass import PickingPass
+
+from UM.Settings.SettingDefinition import SettingDefinition
+from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Settings.ContainerRegistry import ContainerRegistry
+
+from collections import OrderedDict
 
 from cura.CuraVersion import CuraVersion  # type: ignore
 from UM.Version import Version
@@ -71,8 +76,7 @@ catalog = i18nCatalog("spoonantiwarping")
 
 if catalog.hasTranslationLoaded():
     Logger.log("i", "Spoon Anti-Warping Plugin translation loaded!")
-    
-    
+   
 class SpoonAntiWarping(Tool):
     def __init__(self):
         super().__init__()
@@ -80,12 +84,10 @@ class SpoonAntiWarping(Tool):
         # Stock Data  
         self._all_picked_node = []
         
-        
         # variable for menu dialog        
         self._UseSize = 0.0
-        self._UseOffset = 0.0
-        self._AsCapsule = False
-        self._AdhesionArea = False
+        self._UseLength = 0.0
+        self._UseWidth = 0.0
         self._Nb_Layer = 1
         self._SMsg = catalog.i18nc("@message", "Remove All") 
         self._Mesg1 = False
@@ -129,7 +131,7 @@ class SpoonAntiWarping(Tool):
             except:
                 pass
         
-        self.setExposedProperties("SSize", "SOffset", "SCapsule", "NLayer", "SMsg" ,"SArea" )
+        self.setExposedProperties("SSize", "SLength", "SWidth", "NLayer", "SMsg" )
         
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
         
@@ -153,21 +155,33 @@ class SpoonAntiWarping(Tool):
         # convert as float to avoid further issue
         self._UseSize = float(self._preferences.getValue("spoon_anti_warping/p_size"))
  
-        self._preferences.addPreference("spoon_anti_warping/p_offset", 0.16)
+        self._preferences.addPreference("spoon_anti_warping/s_length", 5)
         # convert as float to avoid further issue
-        self._UseOffset = float(self._preferences.getValue("spoon_anti_warping/p_offset"))
+        self._UseLength = float(self._preferences.getValue("spoon_anti_warping/s_length"))
 
-        self._preferences.addPreference("spoon_anti_warping/as_capsule", False)
+        self._preferences.addPreference("spoon_anti_warping/s_width", 2)
         # convert as float to avoid further issue
-        self._AsCapsule = bool(self._preferences.getValue("spoon_anti_warping/as_capsule")) 
-
-        self._preferences.addPreference("spoon_anti_warping/adhesion_area", False)
-        self._AdhesionArea = bool(self._preferences.getValue("spoon_anti_warping/adhesion_area"))   
+        self._UseWidth = float(self._preferences.getValue("spoon_anti_warping/s_width"))
 
         self._preferences.addPreference("spoon_anti_warping/nb_layer", 1)
         # convert as float to avoid further issue
         self._Nb_Layer = int(self._preferences.getValue("spoon_anti_warping/nb_layer"))       
-     
+
+        # Define a new settings "spoon_mesh""
+        self._settings_dict = OrderedDict()
+        self._settings_dict["spoon_mesh"] = {
+            "label": "Spoon mesh",
+            "description": "Mesh used as spoon identification element (Special parameter added for the plugin Sppon Anti-Warping!)",
+            "type": "bool",
+            "default_value": False,
+            "enabled": False,
+            "settable_per_mesh": True,
+            "settable_per_extruder": False,
+            "settable_per_meshgroup": False,
+            "settable_globally": False
+        }
+        ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
+        
                 
     def event(self, event):
         super().event(event)
@@ -202,7 +216,7 @@ class SpoonAntiWarping(Tool):
             if node_stack:
             
                 if node_stack.getProperty("support_mesh", "value"):
-                    self._removeSupportMesh(picked_node)
+                    self._removeSpoonMesh(picked_node)
                     return
 
                 elif node_stack.getProperty("anti_overhang_mesh", "value") or node_stack.getProperty("infill_mesh", "value") or node_stack.getProperty("support_mesh", "value"):
@@ -221,10 +235,44 @@ class SpoonAntiWarping(Tool):
                             
             # Add the support_mesh cube at the picked location
             self._op = GroupedOperation()
-            self._createSupportMesh(picked_node, picked_position)
+            self._createSpoonMesh(picked_node, picked_position)
             self._op.push() 
 
-    def _createSupportMesh(self, parent: CuraSceneNode, position: Vector):
+    def _onContainerLoadComplete(self, container_id):
+        if not ContainerRegistry.getInstance().isLoaded(container_id):
+            # skip containers that could not be loaded, or subsequent findContainers() will cause an infinite loop
+            return
+
+        try:
+            container = ContainerRegistry.getInstance().findContainers(id = container_id)[0]
+
+        except IndexError:
+            # the container no longer exists
+            return
+
+        if not isinstance(container, DefinitionContainer):
+            # skip containers that are not definitions
+            return
+        if container.getMetaDataEntry("type") == "extruder":
+            # skip extruder definitions
+            return
+
+        blackmagic_category = container.findDefinitions(key="blackmagic")
+        identification_mesh = container.findDefinitions(key=list(self._settings_dict.keys())[0])
+        
+        if blackmagic_category and not identification_mesh:            
+            blackmagic_category = blackmagic_category[0]
+            for setting_key, setting_dict in self._settings_dict.items():
+
+                definition = SettingDefinition(setting_key, container, blackmagic_category, self._i18n_catalog)
+                definition.deserialize(setting_dict)
+
+                # add the setting to the already existing platform adhesion setting definition
+                blackmagic_category._children.append(definition)
+                container._definition_cache[setting_key] = definition
+                container._updateRelations(definition)
+                
+    def _createSpoonMesh(self, parent: CuraSceneNode, position: Vector):
         node = CuraSceneNode()
 
         node.setName("RoundTab")
@@ -252,12 +300,8 @@ class SpoonAntiWarping(Tool):
         _layer_h = (_layer_h_i * 1.2) + (_layer_height * (self._Nb_Layer -1) )
         _line_w = _line_w * 1.2 
         
-        if self._AsCapsule:
-             # Capsule creation Diameter , Increment angle 10°, length, layer_height_0*1.2 , line_width
-            mesh = self._createCapsule(self._UseSize,10,_long,_layer_h,_line_w)       
-        else:
-            # Cylinder creation Diameter , Increment angle 10°, length, layer_height_0*1.2
-            mesh = self._createPastille(self._UseSize,10,_long,_layer_h)
+        # Cylinder creation Diameter , Increment angle 10°, length, layer_height_0*1.2
+        mesh = self._createPastille(self._UseSize,10,_long,_layer_h)
         
         
         node.setMeshData(mesh.build())
@@ -281,28 +325,6 @@ class SpoonAntiWarping(Tool):
         new_instance.setProperty("value", False)
         new_instance.resetState()  # Ensure that the state is not seen as a user state.
         settings.addInstance(new_instance)
- 
-        # Define support_type
-        if self._AsCapsule:
-            key="support_type"
-            s_p = global_container_stack.getProperty(key, "value")
-            if s_p ==  'buildplate' and not self._Mesg1 :
-                definition_key=key + " label"
-                untranslated_label=extruder_stack.getProperty(key,"label")
-                translated_label=i18n_catalog.i18nc(definition_key, untranslated_label) 
-                Format_String = catalog.i18nc("@info:label", "Info modification current profile '") + translated_label  + catalog.i18nc("@info:label", "' parameter\nNew value : ") + catalog.i18nc("@info:label", "Everywhere")
-                Message(text = Format_String, title = catalog.i18nc("@info:title", "Warning ! Tab Anti Warping Plus")).show()
-                Logger.log('d', 'support_type different : ' + str(s_p))
-                # Define support_type=everywhere
-                global_container_stack.setProperty(key, "value", 'everywhere')
-                self._Mesg1 = True
-               
-        # Define support_xy_distance
-        definition = stack.getSettingDefinition("support_xy_distance")
-        new_instance = SettingInstance(definition, settings)
-        new_instance.setProperty("value", self._UseOffset)
-        # new_instance.resetState()  # Ensure that the state is not seen as a user state.
-        settings.addInstance(new_instance)
 
         # Fix some settings in Cura to get a better result
         id_ex=0
@@ -314,19 +336,19 @@ class SpoonAntiWarping(Tool):
         # https://github.com/Ultimaker/Cura/issues/9882
         key="support_xy_distance"
         _xy_distance = extruder_stack.getProperty(key, "value")
-        if self._UseOffset !=  _xy_distance and not self._Mesg2 :
-            _msg = "New value : %8.3f" % (self._UseOffset)          
+        if self._UseLength !=  _xy_distance and not self._Mesg2 :
+            _msg = "New value : %8.3f" % (self._UseLength)          
             definition_key=key + " label"
             untranslated_label=extruder_stack.getProperty(key,"label")
             translated_label=i18n_catalog.i18nc(definition_key, untranslated_label) 
             Format_String = catalog.i18nc("@info:label", "Info modification current profile '") + "%s" + catalog.i18nc("@info:label", "' parameter\nNew value : ") + "%8.3f"
-            Message(text = Format_String % (translated_label, self._UseOffset), title = catalog.i18nc("@info:title", "Warning ! Tab Anti Warping Plus")).show()
+            Message(text = Format_String % (translated_label, self._UseLength), title = catalog.i18nc("@info:title", "Warning ! Tab Anti Warping Plus")).show()
             Logger.log('d', 'support_xy_distance different : ' + str(_xy_distance))
             # Define support_xy_distance
             if self._Extruder_count > 1 :
-                global_container_stack.setProperty("support_xy_distance", "value", self._UseOffset)
+                global_container_stack.setProperty("support_xy_distance", "value", self._UseLength)
             else:
-                extruder_stack.setProperty("support_xy_distance", "value", self._UseOffset)
+                extruder_stack.setProperty("support_xy_distance", "value", self._UseLength)
             
             self._Mesg2 = True
  
@@ -361,7 +383,7 @@ class SpoonAntiWarping(Tool):
         
         CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)
 
-    def _removeSupportMesh(self, node: CuraSceneNode):
+    def _removeSpoonMesh(self, node: CuraSceneNode):
         parent = node.getParent()
         if parent == self._controller.getScene().getRoot():
             parent = None
@@ -400,83 +422,9 @@ class SpoonAntiWarping(Tool):
 
         self._had_selection = has_selection
  
-    # Capsule creation
-    def _createCapsule(self, size, nb , lg, He, lw):
-        mesh = MeshBuilder()
-        # Per-vertex normals require duplication of vertices
-        r = size / 2
-        # First layer length
-        sup = -lg + He
-        if self._Nb_Layer >1 :
-            sup_c = -lg + (He * 2)
-        else:
-            sup_c = -lg + (He * 3)
-        l = -lg
-        rng = int(360 / nb)
-        ang = math.radians(nb)
-
-        r_sup=math.tan(math.radians(45))*(He * 3)+r
-        # Top inside radius 
-        ri=r_sup-(1.8*lw)
-        # Top radius 
-        rit=r-(1.8*lw)
-            
-        verts = []
-        for i in range(0, rng):
-            # Top
-            verts.append([ri*math.cos(i*ang), sup_c, ri*math.sin(i*ang)])
-            verts.append([r_sup*math.cos((i+1)*ang), sup_c, r_sup*math.sin((i+1)*ang)])
-            verts.append([r_sup*math.cos(i*ang), sup_c, r_sup*math.sin(i*ang)])
-            
-            verts.append([ri*math.cos((i+1)*ang), sup_c, ri*math.sin((i+1)*ang)])
-            verts.append([r_sup*math.cos((i+1)*ang), sup_c, r_sup*math.sin((i+1)*ang)])
-            verts.append([ri*math.cos(i*ang), sup_c, ri*math.sin(i*ang)])
-
-            #Side 1a
-            verts.append([r_sup*math.cos(i*ang), sup_c, r_sup*math.sin(i*ang)])
-            verts.append([r_sup*math.cos((i+1)*ang), sup_c, r_sup*math.sin((i+1)*ang)])
-            verts.append([r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
-            
-            #Side 1b
-            verts.append([r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
-            verts.append([r*math.cos(i*ang), l, r*math.sin(i*ang)])
-            verts.append([r_sup*math.cos(i*ang), sup_c, r_sup*math.sin(i*ang)])
- 
-            #Side 2a
-            verts.append([rit*math.cos((i+1)*ang), sup, rit*math.sin((i+1)*ang)])
-            verts.append([ri*math.cos((i+1)*ang), sup_c, ri*math.sin((i+1)*ang)])
-            verts.append([ri*math.cos(i*ang), sup_c, ri*math.sin(i*ang)])
-            
-            #Side 2b
-            verts.append([ri*math.cos(i*ang), sup_c, ri*math.sin(i*ang)])
-            verts.append([rit*math.cos(i*ang), sup, rit*math.sin(i*ang)])
-            verts.append([rit*math.cos((i+1)*ang), sup, rit*math.sin((i+1)*ang)])
-                
-            #Bottom Top
-            verts.append([0, sup, 0])
-            verts.append([rit*math.cos((i+1)*ang), sup, rit*math.sin((i+1)*ang)])
-            verts.append([rit*math.cos(i*ang), sup, rit*math.sin(i*ang)])
-            
-            #Bottom 
-            verts.append([0, l, 0])
-            verts.append([r*math.cos(i*ang), l, r*math.sin(i*ang)])
-            verts.append([r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)]) 
-            
-            
-        mesh.setVertices(numpy.asarray(verts, dtype=numpy.float32))
-
-        indices = []
-        # for every angle increment 24 Vertices
-        tot = rng * 24
-        for i in range(0, tot, 3): # 
-            indices.append([i, i+1, i+2])
-        mesh.setIndices(numpy.asarray(indices, dtype=numpy.int32))
-
-        mesh.calculateNormals()
-        return mesh
         
     # Cylinder creation
-    def _createPastille(self, size, nb , lg, He):
+    def _createPastille(self, size, nb , lg, He):   
         mesh = MeshBuilder()
         # Per-vertex normals require duplication of vertices
         r = size / 2
@@ -517,12 +465,12 @@ class SpoonAntiWarping(Tool):
         mesh.calculateNormals()
         return mesh
  
-    def removeAllSupportMesh(self):
+    def removeAllSpoonMesh(self):
         if self._all_picked_node:
             for node in self._all_picked_node:
                 node_stack = node.callDecoration("getStack")
                 if node_stack.getProperty("support_mesh", "value"):
-                    self._removeSupportMesh(node)
+                    self._removeSpoonMesh(node)
             self._all_picked_node = []
             self._SMsg = catalog.i18nc("@message", "Remove All") 
             self.propertyChanged.emit()
@@ -536,7 +484,7 @@ class SpoonAntiWarping(Tool):
                         if node_stack.getProperty("support_mesh", "value"):
                             # N_Name=node.getName()
                             # Logger.log('d', 'support_mesh : ' + str(N_Name)) 
-                            self._removeSupportMesh(node)
+                            self._removeSpoonMesh(node)
  
     # Source code from MeshTools Plugin 
     # Copyright (c) 2020 Aldo Hoeben / fieldOfView
@@ -556,8 +504,8 @@ class SpoonAntiWarping(Tool):
 
         return []
 
-    # Automatix creation    
-    def addAutoSupportMesh(self) -> int:
+    # Automatic creation    
+    def addAutoSpoonMesh(self) -> int:
         nb_Tab=0
         act_position = Vector(99999.99,99999.99,99999.99)
         first_pt=Vector
@@ -581,13 +529,10 @@ class SpoonAntiWarping(Tool):
                     # and Selection.isSelected(node)
                         Logger.log('d', "Mesh : {}".format(node.getName()))
                         
-                        #hull_polygon = node.callDecoration("getConvexHull")
-                        if self._AdhesionArea :
-                            hull_polygon = node.callDecoration("getAdhesionArea")
-                        else:
-                            # hull_polygon = node.callDecoration("getConvexHull")
-                            # hull_polygon = node.callDecoration("getConvexHullBoundary")
-                            hull_polygon = node.callDecoration("_compute2DConvexHull")
+                        # hull_polygon = node.callDecoration("getAdhesionArea")
+                        # hull_polygon = node.callDecoration("getConvexHull")
+                        # hull_polygon = node.callDecoration("getConvexHullBoundary")
+                        hull_polygon = node.callDecoration("_compute2DConvexHull")
                                    
                         if not hull_polygon or hull_polygon.getPoints is None:
                             Logger.log("w", "Object {} cannot be calculated because it has no convex hull.".format(node.getName()))
@@ -619,19 +564,13 @@ class SpoonAntiWarping(Tool):
                                  
                                 # Logger.log('d', "Length First Last : {}".format(lgfl))
                                 if lght >= (self._UseSize*0.5) and lgfl >= (self._UseSize*0.5) :
-                                    self._createSupportMesh(node, new_position)
+                                    self._createSpoonMesh(node, new_position)
                                     act_position = new_position                               
                             else:
                                 if lght >= (self._UseSize*0.5) :
-                                    self._createSupportMesh(node, new_position)
+                                    self._createSpoonMesh(node, new_position)
                                     act_position = new_position
-                                 
-                            # Useless but I keep it for the code example
-                            # Using findObject(id(node))
-                            # act_node = self._controller.getScene().findObject(id(node))
-                            # if act_node:
-                            #     Logger.log('d', "Mesh To Add : {}".format(act_node.getName()))
-                            #     self._createSupportMesh(act_node, Vector(point[0], 0, point[1]))  
+                                  
         self._op.push() 
         return nb_Tab
 
@@ -694,51 +633,44 @@ class SpoonAntiWarping(Tool):
         self._Nb_Layer = i_value
         self._preferences.setValue("spoon_anti_warping/nb_layer", i_value)
         
-    def getSOffset(self) -> float:
+    def getSLength(self) -> float:
         """ 
-            return: golabl _UseOffset  in mm.
+            return: golabl _UseLength  in mm.
         """           
-        return self._UseOffset
+        return self._UseLength
   
-    def setSOffset(self, SOffset: str) -> None:
+    def setSLength(self, SLength: str) -> None:
         """
-        param SOffset: SOffset in mm.
+        param SLength: SLength in mm.
         """
  
         try:
-            s_value = float(SOffset)
+            s_value = float(SLength)
         except ValueError:
             return
         
         #Logger.log('d', 's_value : ' + str(s_value)) 
         self._Mesg2 = False        
-        self._UseOffset = s_value
-        self._preferences.setValue("spoon_anti_warping/p_offset", s_value)
+        self._UseLength = s_value
+        self._preferences.setValue("spoon_anti_warping/s_length", s_value) 
 
-    def getSCapsule(self) -> bool:
+    def getSWidth(self) -> float:
         """ 
-            return: golabl _AsCapsule  as boolean
+            return: golabl _UseWidth  in mm.
         """           
-        return self._AsCapsule
+        return self._UseWidth
   
-    def setSCapsule(self, SCapsule: bool) -> None:
+    def setSWidth(self, SWidth: str) -> None:
         """
-        param SCapsule: as boolean.
+        param SWidth : SWidth in mm.
         """
-        self._Mesg1 = False
-        self._AsCapsule = SCapsule
-        self._preferences.setValue("spoon_anti_warping/as_capsule", SCapsule)
+ 
+        try:
+            s_value = float(SLength)
+        except ValueError:
+            return
         
-    def getSArea(self) -> bool:
-        """ 
-            return: golabl _SArea  as boolean
-        """           
-        return self._AdhesionArea
-  
-    def setSArea(self, SArea: bool) -> None:
-        """
-        param SArea: as boolean.
-        """
-        self._AdhesionArea = SArea
-        self._preferences.setValue("spoon_anti_warping/adhesion_area", SArea)
-
+        #Logger.log('d', 's_value : ' + str(s_value)) 
+        self._Mesg2 = False        
+        self._UseWidth = s_value
+        self._preferences.setValue("spoon_anti_warping/s_width", s_value) 
