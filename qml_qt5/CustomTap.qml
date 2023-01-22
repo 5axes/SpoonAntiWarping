@@ -180,7 +180,7 @@ Item
 		width: UM.Theme.getSize("setting_control").width
 		height: UM.Theme.getSize("setting_control").height		
 		text: catalog.i18nc("@label", UM.ActiveTool.properties.getValue("SMsg"))
-		onClicked: UM.ActiveTool.triggerAction("removeAllSupportMesh")
+		onClicked: UM.ActiveTool.triggerAction("removeAllSpoonMesh")
 	}
 	
 	Rectangle {
@@ -200,7 +200,7 @@ Item
 		width: UM.Theme.getSize("setting_control").width
 		height: UM.Theme.getSize("setting_control").height	
 		text: catalog.i18nc("@label", "Automatic Addition")
-		onClicked: UM.ActiveTool.triggerAction("addAutoSupportMesh")
+		onClicked: UM.ActiveTool.triggerAction("addAutoSpoonMesh")
 	}
 	
 }
