@@ -1,3 +1,3 @@
-# Sprue Anti-Warping
+# Spoon Anti-Warping
 
 Plugin Cura Spoon Anti-Warping
