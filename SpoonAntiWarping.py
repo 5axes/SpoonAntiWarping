@@ -90,22 +90,20 @@ class SpoonAntiWarping(Tool):
         self._UseWidth = 0.0
         self._Nb_Layer = 1
         self._SMsg = catalog.i18nc("@message", "Remove All") 
-        self._Mesg1 = False
-        self._Mesg2 = False
-        self._Mesg3 = False
-
 
         # Shortcut
         if not VERSION_QT5:
-            self._shortcut_key = Qt.Key.Key_J
+            self._shortcut_key = Qt.Key.Key_S
         else:
-            self._shortcut_key = Qt.Key_J
+            self._shortcut_key = Qt.Key_S
             
         self._controller = self.getController()
 
         self._selection_pass = None
         
         self._application = CuraApplication.getInstance()
+        #important do not delete
+        self._i18n_catalog = None
 
         # Suggested solution from fieldOfView . in this discussion solved in Cura 4.9
         # https://github.com/5axes/Calibration-Shapes/issues/1
@@ -115,9 +113,6 @@ class SpoonAntiWarping(Tool):
         
         self.Major=1
         self.Minor=0
-
-        # Logger.log('d', "Info Version CuraVersion --> " + str(Version(CuraVersion)))
-        Logger.log('d', "Info CuraVersion --> " + str(CuraVersion))
         
         # Test version for Cura Master
         # https://github.com/smartavionics/Cura
@@ -134,7 +129,6 @@ class SpoonAntiWarping(Tool):
         self.setExposedProperties("SSize", "SLength", "SWidth", "NLayer", "SMsg" )
         
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
-        
          
         # Note: if the selection is cleared with this tool active, there is no way to switch to
         # another tool than to reselect an object (by clicking it) because the tool buttons in the
@@ -151,9 +145,9 @@ class SpoonAntiWarping(Tool):
         
         # set the preferences to store the default value
         self._preferences = CuraApplication.getInstance().getPreferences()
-        self._preferences.addPreference("spoon_anti_warping/p_size", 10)
+        self._preferences.addPreference("spoon_anti_warping/s_size", 10)
         # convert as float to avoid further issue
-        self._UseSize = float(self._preferences.getValue("spoon_anti_warping/p_size"))
+        self._UseSize = float(self._preferences.getValue("spoon_anti_warping/s_size"))
  
         self._preferences.addPreference("spoon_anti_warping/s_length", 5)
         # convert as float to avoid further issue
@@ -171,10 +165,10 @@ class SpoonAntiWarping(Tool):
         self._settings_dict = OrderedDict()
         self._settings_dict["spoon_mesh"] = {
             "label": "Spoon mesh",
-            "description": "Mesh used as spoon identification element (Special parameter added for the plugin Sppon Anti-Warping!)",
+            "description": "Mesh used as spoon identification element (Special parameter added for the plugin Spoon Anti-Warping!)",
             "type": "bool",
             "default_value": False,
-            "enabled": False,
+            "enabled": True,
             "settable_per_mesh": True,
             "settable_per_extruder": False,
             "settable_per_meshgroup": False,
@@ -182,6 +176,7 @@ class SpoonAntiWarping(Tool):
         }
         ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
         
+        Logger.log('d', "Info CuraVersion --> " + str(CuraVersion))
                 
     def event(self, event):
         super().event(event)
@@ -215,7 +210,7 @@ class SpoonAntiWarping(Tool):
             
             if node_stack:
             
-                if node_stack.getProperty("support_mesh", "value"):
+                if node_stack.getProperty("spoon_mesh", "value"):
                     self._removeSpoonMesh(picked_node)
                     return
 
@@ -233,11 +228,11 @@ class SpoonAntiWarping(Tool):
             Logger.log('d', "X : {}".format(picked_position.x))
             Logger.log('d', "Y : {}".format(picked_position.y))
                             
-            # Add the support_mesh cube at the picked location
+            # Add the spoon_mesh at the picked location
             self._op = GroupedOperation()
             self._createSpoonMesh(picked_node, picked_position)
             self._op.push() 
-
+           
     def _onContainerLoadComplete(self, container_id):
         if not ContainerRegistry.getInstance().isLoaded(container_id):
             # skip containers that could not be loaded, or subsequent findContainers() will cause an infinite loop
@@ -258,9 +253,9 @@ class SpoonAntiWarping(Tool):
             return
 
         blackmagic_category = container.findDefinitions(key="blackmagic")
-        identification_mesh = container.findDefinitions(key=list(self._settings_dict.keys())[0])
+        spoon_mesh = container.findDefinitions(key=list(self._settings_dict.keys())[0])
         
-        if blackmagic_category and not identification_mesh:            
+        if blackmagic_category and not spoon_mesh:            
             blackmagic_category = blackmagic_category[0]
             for setting_key, setting_dict in self._settings_dict.items():
 
@@ -271,7 +266,7 @@ class SpoonAntiWarping(Tool):
                 blackmagic_category._children.append(definition)
                 container._definition_cache[setting_key] = definition
                 container._updateRelations(definition)
-                
+        
     def _createSpoonMesh(self, parent: CuraSceneNode, position: Vector):
         node = CuraSceneNode()
 
@@ -313,64 +308,18 @@ class SpoonAntiWarping(Tool):
         stack = node.callDecoration("getStack") # created by SettingOverrideDecorator that is automatically added to CuraSceneNode
         settings = stack.getTop()
 
-        # support_mesh type
-        definition = stack.getSettingDefinition("support_mesh")
+        definition = stack.getSettingDefinition("spoon_mesh")
         new_instance = SettingInstance(definition, settings)
         new_instance.setProperty("value", True)
         new_instance.resetState()  # Ensure that the state is not seen as a user state.
         settings.addInstance(new_instance)
-
-        definition = stack.getSettingDefinition("support_mesh_drop_down")
-        new_instance = SettingInstance(definition, settings)
-        new_instance.setProperty("value", False)
-        new_instance.resetState()  # Ensure that the state is not seen as a user state.
-        settings.addInstance(new_instance)
-
+        
         # Fix some settings in Cura to get a better result
         id_ex=0
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         extruder_stack = CuraApplication.getInstance().getExtruderManager().getActiveExtruderStacks()[0]
         #extruder = global_container_stack.extruderList[int(id_ex)]    
-        
-        # Hop to fix it in a futur release
-        # https://github.com/Ultimaker/Cura/issues/9882
-        key="support_xy_distance"
-        _xy_distance = extruder_stack.getProperty(key, "value")
-        if self._UseLength !=  _xy_distance and not self._Mesg2 :
-            _msg = "New value : %8.3f" % (self._UseLength)          
-            definition_key=key + " label"
-            untranslated_label=extruder_stack.getProperty(key,"label")
-            translated_label=i18n_catalog.i18nc(definition_key, untranslated_label) 
-            Format_String = catalog.i18nc("@info:label", "Info modification current profile '") + "%s" + catalog.i18nc("@info:label", "' parameter\nNew value : ") + "%8.3f"
-            Message(text = Format_String % (translated_label, self._UseLength), title = catalog.i18nc("@info:title", "Warning ! Tab Anti Warping Plus")).show()
-            Logger.log('d', 'support_xy_distance different : ' + str(_xy_distance))
-            # Define support_xy_distance
-            if self._Extruder_count > 1 :
-                global_container_stack.setProperty("support_xy_distance", "value", self._UseLength)
-            else:
-                extruder_stack.setProperty("support_xy_distance", "value", self._UseLength)
-            
-            self._Mesg2 = True
- 
-        if self._Nb_Layer >1 :
-            key="support_infill_rate"
-            s_p = int(extruder_stack.getProperty(key, "value"))
-            Logger.log('d', 'support_infill_rate actual : ' + str(s_p))
-            if s_p < 99 and not self._Mesg3 :
-                definition_key=key + " label"
-                untranslated_label=extruder_stack.getProperty(key,"label")
-                translated_label=i18n_catalog.i18nc(definition_key, untranslated_label)     
-                Format_String = catalog.i18nc("@info:label", "Info modification current profile '") + translated_label + catalog.i18nc("@info:label", "' parameter\nNew value : ")+ catalog.i18nc("@info:label", "100%")                
-                Message(text = Format_String , title = catalog.i18nc("@info:title", "Warning ! Tab Anti Warping Plus")).show()
-                Logger.log('d', 'support_infill_rate different : ' + str(s_p))
-                # Define support_infill_rate=100%
-                if self._Extruder_count > 1 :
-                    global_container_stack.setProperty("support_infill_rate", "value", 100)
-                else:
-                    extruder_stack.setProperty("support_infill_rate", "value", 100)
                 
-                self._Mesg3 = True
-        
         #self._op = GroupedOperation()
         # First add node to the scene at the correct position/scale, before parenting, so the support mesh does not get scaled with the parent
         self._op.addOperation(AddSceneNodeOperation(node, self._controller.getScene().getRoot()))
@@ -401,7 +350,7 @@ class SpoonAntiWarping(Tool):
 
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            plugin_enabled = global_container_stack.getProperty("support_mesh", "enabled")
+            plugin_enabled = global_container_stack.getProperty("spoon_mesh", "enabled")
 
         CuraApplication.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, plugin_enabled)
     
@@ -469,7 +418,7 @@ class SpoonAntiWarping(Tool):
         if self._all_picked_node:
             for node in self._all_picked_node:
                 node_stack = node.callDecoration("getStack")
-                if node_stack.getProperty("support_mesh", "value"):
+                if node_stack.getProperty("spoon_mesh", "value"):
                     self._removeSpoonMesh(node)
             self._all_picked_node = []
             self._SMsg = catalog.i18nc("@message", "Remove All") 
@@ -481,9 +430,9 @@ class SpoonAntiWarping(Tool):
                     # Logger.log('d', 'isSliceable : ' + str(N_Name))
                     node_stack=node.callDecoration("getStack")           
                     if node_stack:        
-                        if node_stack.getProperty("support_mesh", "value"):
+                        if node_stack.getProperty("spoon_mesh", "value"):
                             # N_Name=node.getName()
-                            # Logger.log('d', 'support_mesh : ' + str(N_Name)) 
+                            # Logger.log('d', 'spoon_mesh : ' + str(N_Name)) 
                             self._removeSpoonMesh(node)
  
     # Source code from MeshTools Plugin 
@@ -523,6 +472,7 @@ class SpoonAntiWarping(Tool):
                     type_infill_mesh = node_stack.getProperty("infill_mesh", "value")
                     type_cutting_mesh = node_stack.getProperty("cutting_mesh", "value")
                     type_support_mesh = node_stack.getProperty("support_mesh", "value")
+                    type_spoon_mesh = node_stack.getProperty("spoon_mesh", "value")
                     type_anti_overhang_mesh = node_stack.getProperty("anti_overhang_mesh", "value") 
                     
                     if not type_infill_mesh and not type_support_mesh and not type_anti_overhang_mesh :
@@ -606,7 +556,7 @@ class SpoonAntiWarping(Tool):
             return      
         #Logger.log('d', 's_value : ' + str(s_value))        
         self._UseSize = s_value
-        self._preferences.setValue("spoon_anti_warping/p_size", s_value)
+        self._preferences.setValue("spoon_anti_warping/s_size", s_value)
  
     def getNLayer(self) -> int:
         """ 
@@ -628,7 +578,6 @@ class SpoonAntiWarping(Tool):
         if i_value < 1:
             return
         
-        self._Mesg3 = False
         #Logger.log('d', 'i_value : ' + str(i_value))        
         self._Nb_Layer = i_value
         self._preferences.setValue("spoon_anti_warping/nb_layer", i_value)
