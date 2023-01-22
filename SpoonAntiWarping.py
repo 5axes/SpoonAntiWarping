@@ -385,34 +385,74 @@ class SpoonAntiWarping(Tool):
         # First layer length
         sup = -lg + He
         l = -lg
+        if length>0 and width>0 :
+            adep=math.atan((0.5*width)/length)
+        else:
+            adep=0
+       
+       adepdeg = math.degrees(adep)
+        
+        Logger.log('d', 'adep : ' + str(adep)) 
+        Logger.log('d', 'adepdeg : ' + str(adepdeg))
+        
         rng = int(360 / nb)
         ang = math.radians(nb)
         
         verts = []
+        
+        # Add Round Part of the Spoon
+        nbv=24 
+        s_sup = width / 2
+        s_inf = s_sup
+        
+        """
+        verts = [ # 6 faces with 4 corners each
+            [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ s_sup,  sup,  s_sup], [ s_inf, l,  s_inf],
+            [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ s_inf, l, -s_inf], [ s_sup,  sup, -s_sup],
+            [ s_inf, l, -s_inf], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ s_inf, l,  s_inf],
+            [-s_sup,  sup, -s_sup], [ s_sup,  sup, -s_sup], [ s_sup,  sup,  s_sup], [-s_sup,  sup,  s_sup],
+            [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup],
+            [ s_inf, l, -s_inf], [ s_inf, l,  s_inf], [ s_sup,  sup,  s_sup], [ s_sup,  sup, -s_sup]
+        ]
+        """
+        verts = [ # 6 faces with 4 corners each
+            [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ length,  sup,  s_sup], [ length, l,  s_inf],
+            [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ length, l, -s_inf], [ length,  sup, -s_sup],
+            [ length, l, -s_inf], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ length, l,  s_inf],
+            [-s_sup,  sup, -s_sup], [ length,  sup, -s_sup], [ length,  sup,  s_sup], [-s_sup,  sup,  s_sup],
+            [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup],
+            [ length, l, -s_inf], [ length, l,  s_inf], [ length,  sup,  s_sup], [ length,  sup, -s_sup]
+        ]               
+        
+        # Add Round Part of the Spoon
         for i in range(0, rng):
             # Top
-            verts.append([0, sup, 0])
-            verts.append([r*math.cos((i+1)*ang), sup, r*math.sin((i+1)*ang)])
-            verts.append([r*math.cos(i*ang), sup, r*math.sin(i*ang)])
+            verts.append([length+r+0, sup, 0])
+            verts.append([length+r+r*math.cos((i+1)*ang), sup, r*math.sin((i+1)*ang)])
+            verts.append([length+r+r*math.cos(i*ang), sup, r*math.sin(i*ang)])
             #Side 1a
-            verts.append([r*math.cos(i*ang), sup, r*math.sin(i*ang)])
-            verts.append([r*math.cos((i+1)*ang), sup, r*math.sin((i+1)*ang)])
-            verts.append([r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
+            verts.append([length+r+r*math.cos(i*ang), sup, r*math.sin(i*ang)])
+            verts.append([length+r+r*math.cos((i+1)*ang), sup, r*math.sin((i+1)*ang)])
+            verts.append([length+r+r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
             #Side 1b
-            verts.append([r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
-            verts.append([r*math.cos(i*ang), l, r*math.sin(i*ang)])
-            verts.append([r*math.cos(i*ang), sup, r*math.sin(i*ang)])
+            verts.append([length+r+r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
+            verts.append([length+r+r*math.cos(i*ang), l, r*math.sin(i*ang)])
+            verts.append([length+r+r*math.cos(i*ang), sup, r*math.sin(i*ang)])
             #Bottom 
-            verts.append([0, l, 0])
-            verts.append([r*math.cos(i*ang), l, r*math.sin(i*ang)])
-            verts.append([r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])          
+            verts.append([length+r+0, l, 0])
+            verts.append([length+r+r*math.cos(i*ang), l, r*math.sin(i*ang)])
+            verts.append([length+r+r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])          
             
         mesh.setVertices(numpy.asarray(verts, dtype=numpy.float32))
 
         indices = []
+        for i in range(0, nbv, 4): # All 6 quads (12 triangles)
+            indices.append([i, i+2, i+1])
+            indices.append([i, i+3, i+2])
+            
         # for every angle increment 12 Vertices
-        tot = rng * 12
-        for i in range(0, tot, 3): # 
+        tot = rng * 12 + nbv
+        for i in range(nbv, tot, 3): # 
             indices.append([i, i+1, i+2])
         mesh.setIndices(numpy.asarray(indices, dtype=numpy.int32))
 
