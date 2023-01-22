@@ -7,10 +7,10 @@ try:
 except ImportError:
     VERSION_QT5 = True
     
-from . import SprueAntiWarping
+from . import SpoonAntiWarping
 
 from UM.i18n import i18nCatalog
-i18n_catalog = i18nCatalog("sprueantiwarping")
+i18n_catalog = i18nCatalog("spoonantiwarping")
 
 def getMetaData():
     if not VERSION_QT5:
@@ -29,4 +29,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "tool": SprueAntiWarping.SprueAntiWarping() }
+    return { "tool": SpoonAntiWarping.SpoonAntiWarping() }

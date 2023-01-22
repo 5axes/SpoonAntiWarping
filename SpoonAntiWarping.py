@@ -149,24 +149,24 @@ class SpoonAntiWarping(Tool):
         
         # set the preferences to store the default value
         self._preferences = CuraApplication.getInstance().getPreferences()
-        self._preferences.addPreference("tab_plus/p_size", 10)
+        self._preferences.addPreference("spoon_anti_warping/p_size", 10)
         # convert as float to avoid further issue
-        self._UseSize = float(self._preferences.getValue("tab_plus/p_size"))
+        self._UseSize = float(self._preferences.getValue("spoon_anti_warping/p_size"))
  
-        self._preferences.addPreference("tab_plus/p_offset", 0.16)
+        self._preferences.addPreference("spoon_anti_warping/p_offset", 0.16)
         # convert as float to avoid further issue
-        self._UseOffset = float(self._preferences.getValue("tab_plus/p_offset"))
+        self._UseOffset = float(self._preferences.getValue("spoon_anti_warping/p_offset"))
 
-        self._preferences.addPreference("tab_plus/as_capsule", False)
+        self._preferences.addPreference("spoon_anti_warping/as_capsule", False)
         # convert as float to avoid further issue
-        self._AsCapsule = bool(self._preferences.getValue("tab_plus/as_capsule")) 
+        self._AsCapsule = bool(self._preferences.getValue("spoon_anti_warping/as_capsule")) 
 
-        self._preferences.addPreference("tab_plus/adhesion_area", False)
-        self._AdhesionArea = bool(self._preferences.getValue("tab_plus/adhesion_area"))   
+        self._preferences.addPreference("spoon_anti_warping/adhesion_area", False)
+        self._AdhesionArea = bool(self._preferences.getValue("spoon_anti_warping/adhesion_area"))   
 
-        self._preferences.addPreference("tab_plus/nb_layer", 1)
+        self._preferences.addPreference("spoon_anti_warping/nb_layer", 1)
         # convert as float to avoid further issue
-        self._Nb_Layer = int(self._preferences.getValue("tab_plus/nb_layer"))       
+        self._Nb_Layer = int(self._preferences.getValue("spoon_anti_warping/nb_layer"))       
      
                 
     def event(self, event):
@@ -667,7 +667,7 @@ class SpoonAntiWarping(Tool):
             return      
         #Logger.log('d', 's_value : ' + str(s_value))        
         self._UseSize = s_value
-        self._preferences.setValue("tab_plus/p_size", s_value)
+        self._preferences.setValue("spoon_anti_warping/p_size", s_value)
  
     def getNLayer(self) -> int:
         """ 
@@ -692,7 +692,7 @@ class SpoonAntiWarping(Tool):
         self._Mesg3 = False
         #Logger.log('d', 'i_value : ' + str(i_value))        
         self._Nb_Layer = i_value
-        self._preferences.setValue("tab_plus/nb_layer", i_value)
+        self._preferences.setValue("spoon_anti_warping/nb_layer", i_value)
         
     def getSOffset(self) -> float:
         """ 
@@ -713,7 +713,7 @@ class SpoonAntiWarping(Tool):
         #Logger.log('d', 's_value : ' + str(s_value)) 
         self._Mesg2 = False        
         self._UseOffset = s_value
-        self._preferences.setValue("tab_plus/p_offset", s_value)
+        self._preferences.setValue("spoon_anti_warping/p_offset", s_value)
 
     def getSCapsule(self) -> bool:
         """ 
@@ -727,7 +727,7 @@ class SpoonAntiWarping(Tool):
         """
         self._Mesg1 = False
         self._AsCapsule = SCapsule
-        self._preferences.setValue("tab_plus/as_capsule", SCapsule)
+        self._preferences.setValue("spoon_anti_warping/as_capsule", SCapsule)
         
     def getSArea(self) -> bool:
         """ 
@@ -740,5 +740,5 @@ class SpoonAntiWarping(Tool):
         param SArea: as boolean.
         """
         self._AdhesionArea = SArea
-        self._preferences.setValue("tab_plus/adhesion_area", SArea)
+        self._preferences.setValue("spoon_anti_warping/adhesion_area", SArea)
 
