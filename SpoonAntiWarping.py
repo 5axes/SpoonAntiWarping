@@ -712,7 +712,7 @@ class SpoonAntiWarping(Tool):
                             # Logger.log('d', "Y : {}".format(point[1]))
                             new_position = Vector(point[0], 0, point[1])
                             lg=act_position-new_position
-                            lght = lg.length()
+                            lght = round(lg.length(),0)
                             # Logger.log('d', "Length : {}".format(lght))
                             # Add a tab if the distance between 2 tabs are more than a Tab Radius
                             # We have to tune this parameter or algorythm in the futur
@@ -720,11 +720,11 @@ class SpoonAntiWarping(Tool):
                                 lgfl=(first_pt-new_position).length()
                                  
                                 # Logger.log('d', "Length First Last : {}".format(lgfl))
-                                if lght >= (self._UseSize*0.5) and lgfl >= (self._UseSize*0.5) :
+                                if lght >= (self._UseSize*0.8) and lgfl >= (self._UseSize*0.8) :
                                     self._createSpoonMesh(node, new_position)
                                     act_position = new_position                               
                             else:
-                                if lght >= (self._UseSize*0.5) :
+                                if lght >= (self._UseSize*0.8) :
                                     self._createSpoonMesh(node, new_position)
                                     act_position = new_position
                                   
