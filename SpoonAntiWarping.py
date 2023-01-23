@@ -596,15 +596,21 @@ class SpoonAntiWarping(Tool):
                         # nb_pt = point[0] / point[1] must be divided by 2
                         # Angle Ref for angle / Y Dir
                         ref = Vector(0, 0, 1)
+                        Id=0
+                        Start_Id=0
+                        End_Id=0
                         for point in points:                               
                             # Logger.log('d', "X : {}".format(point[0]))
                             # Logger.log('d', "Point : {}".format(point))
                             new_position = Vector(point[0], 0, point[1])
                             lg=calc_position-new_position
                             # Logger.log('d', "Lg : {}".format(lg))
-                            lght = lg.length()
+                            # lght = lg.length()
+                            lght = round(lg.length(),0)
+
                             if lght<min_lght and lght>0 :
                                 min_lght=lght
+                                Start_Id=Id
                                 Select_position = new_position
                                 unit_vector2 = lg.normalized()
                                 #Logger.log('d', "unit_vector2 : {}".format(unit_vector2))
@@ -615,7 +621,35 @@ class SpoonAntiWarping(Tool):
                                 if unit_vector2.x>=0 :
                                     Angle = math.pi+LeSin  #angle in radian
                                 else :
-                                    Angle = -LeSin
+                                    Angle = -LeSin                                    
+                                    
+                            if lght==min_lght and lght>0 :
+                                if Id > End_Id+1 :
+                                    Start_Id=Id
+                                    End_Id=Id
+                                else :
+                                    End_Id=Id
+                               
+                                    
+                            Id+=1
+                        
+                        # Could be the case with automatic .. rarely in pickpoint   
+                        if Start_Id != End_Id :
+                            Logger.log('d', "Possibility   : {} / {}".format(Start_Id,End_Id))
+                            Id=int(Start_Id+0.5*(End_Id-Start_Id))
+                            Logger.log('d', "Id   : {}".format(Id))
+                            new_position = Vector(points[Id][0], 0, points[Id][1])
+                            lg=calc_position-new_position                            
+                            unit_vector2 = lg.normalized()
+                            #Logger.log('d', "unit_vector2 : {}".format(unit_vector2))
+                            #LaTan = math.atan(ref.dot(unit_vector2))
+                            LeSin = math.asin(ref.dot(unit_vector2))
+                            LeCos = math.acos(ref.dot(unit_vector2))
+                            
+                            if unit_vector2.x>=0 :
+                                Angle = math.pi+LeSin  #angle in radian
+                            else :
+                                Angle = -LeSin
                                     
                         Logger.log('d', "Pick_position   : {}".format(calc_position))
                         Logger.log('d', "Close_position  : {}".format(Select_position))
