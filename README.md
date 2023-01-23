@@ -15,9 +15,9 @@ The Spoon Anti-warping plugin offers two methods for adding tabs to a 3D printed
 ![Plugin Cura Spoon Anti-Warping. options](https://github.com/5axes/SpoonAntiWarping/blob/main/images/options.png)
 
 
-The manual method allows users to manually select the position of the tabs on the object. This method is useful for adding tabs to specific areas that are prone to warping, such as sharp edges or thin sections. To use the manual method, the user simply selects the area where they want to add the tabs and clicks to create them. This allows for precise control over the number and placement of tabs, which can be important in some cases.
+The manual method allows users to manually select the position of the tabs on the object. This method is useful for adding tabs to specific areas that are prone to warping, such as sharp edges or thin sections. To use the manual method, the user simply selects the positioin where they want to add the tabs and clicks to create them. This allows for precise control over the number and placement of tabs, which can be important in some cases.
 
-The automatic method, on the other hand, uses an algorithm to automatically generate tabs in areas where warping is likely to occur. This method is useful for those who want to quickly add tabs to an entire object without having to manually select each location. The algorithm takes into account factors such as the size and shape of the object, as well as the specific properties of the material being used. 
+The automatic method, on the other hand, uses an algorithm to automatically generate tabs in the convex_hull border of the part. This method is useful for those who want to quickly add tabs to an entire object without having to manually select each location. 
 
 
 In order for the Spoon Anti-warping plugin to work correctly in the Cura slicing software, the adherence option must be enabled. This option creates a base, or "raft," for the object to be printed on, which helps to prevent warping by providing a stable foundation for the object to cool on.

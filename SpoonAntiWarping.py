@@ -7,6 +7,7 @@
 #
 # All modification 5@xes
 # First release  22-01-2023  First proof of concept
+# Second release  23-01-2023  Limit the number of Tab with Circular element
 #------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
