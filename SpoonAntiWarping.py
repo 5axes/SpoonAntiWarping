@@ -94,9 +94,9 @@ class SpoonAntiWarping(Tool):
 
         # Shortcut
         if not VERSION_QT5:
-            self._shortcut_key = Qt.Key.Key_S
+            self._shortcut_key = Qt.Key.Key_K
         else:
-            self._shortcut_key = Qt.Key_S
+            self._shortcut_key = Qt.Key_K
             
         self._controller = self.getController()
 
@@ -189,7 +189,7 @@ class SpoonAntiWarping(Tool):
 
         if event.type == Event.MousePressEvent and MouseEvent.LeftButton in event.buttons and self._controller.getToolsEnabled():
             if ctrl_is_active:
-                self._controller.setActiveTool("TranslateTool")
+                self._controller.setActiveTool("RotateTool")
                 return
 
             if self._skip_press:
@@ -501,7 +501,7 @@ class SpoonAntiWarping(Tool):
         # Rotate the mesh
         tot = nbvr * 12 + 6 + nbv 
         Tverts = []
-        Logger.log('d', "Angle Rotation : {}".format(angle))
+        # Logger.log('d', "Angle Rotation : {}".format(angle))
         for i in range(0,tot) :           
             xr = (verts[i][0] * math.cos(angle)) - (verts[i][2] * math.sin(angle)) 
             yr = (verts[i][0] * math.sin(angle)) + (verts[i][2] * math.cos(angle))
