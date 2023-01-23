@@ -20,14 +20,15 @@ The manual method allows users to manually select the position of the tabs on th
 The automatic method, on the other hand, uses an algorithm to automatically generate tabs in the convex_hull border of the part. This method is useful for those who want to quickly add tabs to an entire object without having to manually select each location. 
 
 
-In order for the Spoon Anti-warping plugin to work correctly in the Cura slicing software, the adherence option must be enabled. This option creates a base, or "raft," for the object to be printed on, which helps to prevent warping by providing a stable foundation for the object to cool on.
+### Notes
+
+In order for the Spoon Anti-warping plugin to work correctly in the Cura slicing software, the adherence option must be enabled. This option creates internaly in Cura an adherence border.
 
 ![Cura Adhesion option](https://github.com/5axes/SpoonAntiWarping/blob/main/images/adhesion.png)
 
+Even if the user does not want to use the raft for the final print, it is necessary to have it enabled while using the Spoon Anti-warping plugin. The plugin uses the these border to calculate the tab orientation. Once the tabs creation is complete, you can remove this option if you don't want anay adherence option creation in the final print.
 
-Even if the user does not want to use the raft for the final print, it is necessary to have it enabled while using the Spoon Anti-warping plugin. The plugin uses the raft to anchor the tabs, so without it, the tabs will not be able to hold the object in place and prevent warping. Once the print is complete, the raft can be easily removed, and the tabs will be left to hold the object.
 
-
-#### YouTube video
+### YouTube video
 
 [![Spoon Anti-Warping](http://img.youtube.com/vi/K2niowptW7M/0.jpg)](https://www.youtube.com/watch?v=K2niowptW7M)
