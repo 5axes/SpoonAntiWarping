@@ -32,31 +32,6 @@ msgctxt "@info:title"
 msgid "Spoon Anti-Warping"
 msgstr ""
 
-#: SpoonAntiWarping.py:
-msgctxt "@info:title"
-msgid "Warning ! Spoon Anti-Warping"
-msgstr ""
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "Info modification current profile '"
-msgstr ""
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "' parameter\nNew value : "
-msgstr ""
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "100%"
-msgstr ""
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "Everywhere"
-msgstr ""
-
 #: SpoonAntiWarping.py::
 msgctxt "@label"
 msgid "Remove All"

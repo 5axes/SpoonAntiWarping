@@ -32,33 +32,6 @@ msgctxt "@info:title"
 msgid "Spoon Anti-Warping"
 msgstr "Cuillère Anti-gauchissement"
 
-#: SpoonAntiWarping.py:
-msgctxt "@info:title"
-msgid "Warning ! Spoon Anti-Warping"
-msgstr "Attention ! Cuillère Anti-décollement Plus"
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "Info modification current profile '"
-msgstr "Information modification du profil actuel Paramètre '"
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "' parameter\nNew value : "
-msgstr ""
-"'\n"
-"Nouvelle valeur : "
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "100%"
-msgstr "100%"
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "Everywhere"
-msgstr "Partout"
-
 #: SpoonAntiWarping.py::
 msgctxt "@label"
 msgid "Remove All"
