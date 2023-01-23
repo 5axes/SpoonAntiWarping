@@ -25,7 +25,7 @@ This menu opens the following folder:
 * Linux: `$HOME/.local/share/cura/<Cura version>/`
 
 
-### How to use it
+## How to use it
 
 The Spoon Anti-warping plugin offers two methods for adding tabs to a 3D printed object: manual and automatic.
 
