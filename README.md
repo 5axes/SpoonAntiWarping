@@ -34,6 +34,23 @@ The Spoon Anti-warping plugin offers two methods for adding tabs to a 3D printed
 
 The manual method allows users to manually select the position of the tabs on the object. This method is useful for adding tabs to specific areas that are prone to warping, such as sharp edges or thin sections. To use the manual method, the user simply selects the positioin where they want to add the tabs and clicks to create them. This allows for precise control over the number and placement of tabs, which can be important in some cases.
 
+### Manual Creation
+
+- Load a model in Cura and select it
+- Click on the "Spoon Anti-Warping" button on the left toolbar  (Shortcut K)
+- Change de value for the tab *Diameter* , the *Spoon Handle Length* or the *Spoon Handle Width* in numeric input fields in the tool panel if necessary
+
+- Click anywhere on the model to place "Spoon Anti-Warping" there
+
+- **Clicking existing Tab deletes it**
+
+- **Clicking existing Tab + Ctrl** switch automaticaly to the ***Rotatle Tool*** to modify the position of the "Spoon Anti-Warping".
+
+* The height of the tabs is automaticaly set to the Initial Layer Height.
+
+>Note: it's easier to add/remove tabs when you are in "Solid View" mode
+
+
 The automatic method, on the other hand, uses an algorithm to automatically generate tabs in the convex_hull border of the part. This method is useful for those who want to quickly add tabs to an entire object without having to manually select each location. 
 
 
