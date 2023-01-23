@@ -59,7 +59,7 @@ from UM.Tool import Tool
 
 import os.path 
 import math
-import numpy
+import numpy as np
 
 from UM.Resources import Resources
 from UM.i18n import i18nCatalog
@@ -208,8 +208,7 @@ class SpoonAntiWarping(Tool):
             node_stack = picked_node.callDecoration("getStack")
 
             
-            if node_stack:
-            
+            if node_stack: 
                 if node_stack.getProperty("spoon_mesh", "value"):
                     self._removeSpoonMesh(picked_node)
                     return
@@ -227,6 +226,7 @@ class SpoonAntiWarping(Tool):
 
             Logger.log('d', "X : {}".format(picked_position.x))
             Logger.log('d', "Y : {}".format(picked_position.y))
+            Logger.log('d', "Name : {}".format(node_stack.getName()))
                             
             # Add the spoon_mesh at the picked location
             self._op = GroupedOperation()
@@ -269,7 +269,12 @@ class SpoonAntiWarping(Tool):
         
     def _createSpoonMesh(self, parent: CuraSceneNode, position: Vector):
         node = CuraSceneNode()
-
+        EName = parent.getName()
+        Logger.log('d', "Info createSpoonMesh for --> " + str(EName))
+        
+        Angle = self.defineAngle(EName,position)
+        Logger.log('d', "Info createSpoonMesh Angle --> " + str(Angle))
+        
         node.setName("RoundTab")
             
         node.setSelectable(True)
@@ -296,7 +301,7 @@ class SpoonAntiWarping(Tool):
         _line_w = _line_w * 1.2 
         
         # Spoon creation Diameter , Length, Width, Increment angle 10°, length, layer_height_0*1.2
-        mesh = self._createSpoon(self._UseSize,self._UseLength,self._UseWidth, 10,_long,_layer_h)
+        mesh = self._createSpoon(self._UseSize,self._UseLength,self._UseWidth, 10,_long,_layer_h , Angle)
         
         node.setMeshData(mesh.build())
 
@@ -378,7 +383,7 @@ class SpoonAntiWarping(Tool):
  
         
     # Cylinder creation
-    def _createSpoon(self, size , length , width , nb , lg, He):   
+    def _createSpoon(self, size , length , width , nb , lg, He , angle):   
         mesh = MeshBuilder()
         # Per-vertex normals require duplication of vertices
         r = size / 2
@@ -487,12 +492,22 @@ class SpoonAntiWarping(Tool):
         verts.append([length+r, sup, 0])
         verts.append([length, sup, -s_sup])
         
-        #Bottom  center
+        # Bottom  center
         verts.append([length, l, -s_inf])
         verts.append([length+r, l, 0])
         verts.append([length, l, s_inf])
 
-        mesh.setVertices(numpy.asarray(verts, dtype=numpy.float32))
+        # Rotate the mesh
+        tot = nbvr * 12 + 6 + nbv 
+        Tverts = []
+        Logger.log('d', "Angle Rotation : {}".format(angle))
+        for i in range(0,tot) :           
+            xr = (verts[i][0] * math.cos(angle)) - (verts[i][2] * math.sin(angle)) 
+            yr = (verts[i][0] * math.sin(angle)) + (verts[i][2] * math.cos(angle))
+            zr = verts[i][1]
+            Tverts.append([xr, zr, yr])
+            
+        mesh.setVertices(np.asarray(Tverts, dtype=np.float32))
 
         indices = []
         for i in range(0, nbv, 4): # All 6 quads (12 triangles)
@@ -503,7 +518,7 @@ class SpoonAntiWarping(Tool):
         tot = nbvr * 12 + 6 + nbv 
         for i in range(nbv, tot, 3): # 
             indices.append([i, i+1, i+2])
-        mesh.setIndices(numpy.asarray(indices, dtype=numpy.int32))
+        mesh.setIndices(np.asarray(indices, dtype=np.int32))
 
         mesh.calculateNormals()
         return mesh
@@ -547,6 +562,70 @@ class SpoonAntiWarping(Tool):
 
         return []
 
+    
+    def defineAngle(self, Cname : str, act_position: Vector) -> float:
+        Angle = 0
+        min_lght = 9999999.999
+        # Set on the build plate for distance
+        calc_position = Vector(act_position.x, 0, act_position.z)
+        # Logger.log('d', "Mesh : {}".format(Cname))
+        # Logger.log('d', "Position : {}".format(calc_position))
+
+        nodes_list = self._getAllSelectedNodes()
+        if not nodes_list:
+            nodes_list = DepthFirstIterator(self._application.getController().getScene().getRoot())
+         
+        for node in nodes_list:
+            if node.callDecoration("isSliceable"):
+                # Logger.log('d', "isSliceable : {}".format(node.getName()))
+                node_stack=node.callDecoration("getStack")           
+                if node_stack:                    
+                    if node.getName()==Cname :
+                        # Logger.log('d', "Mesh : {}".format(node.getName()))
+                        
+                        hull_polygon = node.callDecoration("getAdhesionArea")
+                        # hull_polygon = node.callDecoration("getConvexHull")
+                        # hull_polygon = node.callDecoration("getConvexHullBoundary")
+                        # hull_polygon = node.callDecoration("_compute2DConvexHull")
+                                   
+                        if not hull_polygon or hull_polygon.getPoints is None:
+                            Logger.log("w", "Object {} cannot be calculated because it has no convex hull.".format(node.getName()))
+                            return 0
+                            
+                        points=hull_polygon.getPoints()
+                        # nb_pt = point[0] / point[1] must be divided by 2
+                        # Angle Ref for angle / Y Dir
+                        ref = Vector(0, 0, 1)
+                        for point in points:                               
+                            # Logger.log('d', "X : {}".format(point[0]))
+                            # Logger.log('d', "Point : {}".format(point))
+                            new_position = Vector(point[0], 0, point[1])
+                            lg=calc_position-new_position
+                            # Logger.log('d', "Lg : {}".format(lg))
+                            lght = lg.length()
+                            if lght<min_lght and lght>0 :
+                                min_lght=lght
+                                Select_position = new_position
+                                unit_vector2 = lg.normalized()
+                                #Logger.log('d', "unit_vector2 : {}".format(unit_vector2))
+                                #LaTan = math.atan(ref.dot(unit_vector2))
+                                LeSin = math.asin(ref.dot(unit_vector2))
+                                LeCos = math.acos(ref.dot(unit_vector2))
+                                
+                                if unit_vector2.x>=0 :
+                                    Angle = math.pi+LeSin  #angle in radian
+                                else :
+                                    Angle = -LeSin
+                                    
+                        Logger.log('d', "Pick_position   : {}".format(calc_position))
+                        Logger.log('d', "Close_position  : {}".format(Select_position))
+                        Logger.log('d', "Unit_vector2  : {}".format(unit_vector2))
+                        Logger.log('d', "Angle Sinus     : {}".format(math.degrees(LeSin)))
+                        Logger.log('d', "Angle Cosinus   : {}".format(math.degrees(LeCos)))
+                        #Logger.log('d', "Angle Tangente  : {}".format(math.degrees(LaTan)))
+                        Logger.log('d', "Chose Angle     : {}".format(math.degrees(Angle)))
+        return Angle
+    
     # Automatic creation    
     def addAutoSpoonMesh(self) -> int:
         nb_Tab=0
@@ -585,7 +664,7 @@ class SpoonAntiWarping(Tool):
                         points=hull_polygon.getPoints()
                         # nb_pt = point[0] / point[1] must be divided by 2
                         nb_pt=points.size*0.5
-                        Logger.log('d', "Size pt : {}".format(nb_pt))
+                        # Logger.log('d', "Size pt : {}".format(nb_pt))
                         
                         for point in points:
                             nb_Tab+=1
