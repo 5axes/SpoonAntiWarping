@@ -9,6 +9,8 @@ The Spoon Anti-warping plugin is a tool designed to prevent warping of sharp edg
 
 Tabs are small, flat extensions that are added to the edges of the object. These tabs act as anchors, holding the edges in place as the object cools and preventing them from warping. The size and number of tabs can be adjusted to suit the specific needs of the object being printed.
 
+I have already an [Tab anti-warping plugin](https://github.com/5axes/TabPlus) but it's not really compatible with the creation of support. With this plugin we can create anti-warping tab as well as support for the print.
+
 ### How to use it
 
 The Spoon Anti-warping plugin offers two methods for adding tabs to a 3D printed object: manual and automatic.
