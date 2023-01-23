@@ -319,6 +319,12 @@ class SpoonAntiWarping(Tool):
         new_instance.resetState()  # Ensure that the state is not seen as a user state.
         settings.addInstance(new_instance)
         
+        definition = stack.getSettingDefinition("infill_mesh_order")
+        new_instance = SettingInstance(definition, settings)
+        new_instance.setProperty("value", 49) #50 "maximum_value_warning": "50"
+        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+        settings.addInstance(new_instance)        
+
         definition = stack.getSettingDefinition("spoon_mesh")
         new_instance = SettingInstance(definition, settings)
         new_instance.setProperty("value", True)
