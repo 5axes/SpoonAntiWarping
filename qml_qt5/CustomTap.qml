@@ -7,7 +7,7 @@
 //   "SLength"  : Length set for Tab in mm
 //   "SWidth"   : Width set for Tab in mm
 //   "NLayer"   : Number of layer
-//   "SMsg"        : Text for the Remove All Button
+//   "SMsg"     : Text for the Remove All Button
 //
 //-----------------------------------------------------------------------------
 
@@ -165,7 +165,7 @@ Item
 	
 	Rectangle {
         id: topRect
-        anchors.top: useCapsuleCheckbox.bottom 
+        anchors.top: textfields.bottom 
 		color: "#00000000"
 		width: UM.Theme.getSize("setting_control").width * 1.3
 		height: UM.Theme.getSize("setting_control").height 

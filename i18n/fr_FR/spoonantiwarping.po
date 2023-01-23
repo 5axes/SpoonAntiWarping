@@ -54,7 +54,7 @@ msgstr "Longueur manche de la cuillère"
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
-msgid "Spoon Handle Widthh"
+msgid "Spoon Handle Width"
 msgstr "Largeur manche de la cuillère"
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:

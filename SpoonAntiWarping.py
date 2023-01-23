@@ -85,9 +85,9 @@ class SpoonAntiWarping(Tool):
         self._all_picked_node = []
         
         # variable for menu dialog        
-        self._UseSize = 0.0
-        self._UseLength = 0.0
-        self._UseWidth = 0.0
+        self._UseSize = 10.0
+        self._UseLength = 3.0
+        self._UseWidth = 2.0
         self._Nb_Layer = 1
         self._SMsg = catalog.i18nc("@message", "Remove All") 
 
@@ -149,7 +149,7 @@ class SpoonAntiWarping(Tool):
         # convert as float to avoid further issue
         self._UseSize = float(self._preferences.getValue("spoon_anti_warping/s_size"))
  
-        self._preferences.addPreference("spoon_anti_warping/s_length", 5)
+        self._preferences.addPreference("spoon_anti_warping/s_length", 3)
         # convert as float to avoid further issue
         self._UseLength = float(self._preferences.getValue("spoon_anti_warping/s_length"))
 
