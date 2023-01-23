@@ -38,7 +38,7 @@ Item
         Label
         {
             height: UM.Theme.getSize("setting_control").height
-            text: catalog.i18nc("@label", "Size")
+            text: catalog.i18nc("@label", "Diameter")
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
@@ -49,7 +49,7 @@ Item
         Label
         {
             height: UM.Theme.getSize("setting_control").height
-            text: catalog.i18nc("@label", "Spoon Length")
+            text: catalog.i18nc("@label", "Spoon Handle Length")
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
@@ -60,7 +60,7 @@ Item
         Label
         {
             height: UM.Theme.getSize("setting_control").height
-            text: catalog.i18nc("@label", "Spoon width")
+            text: catalog.i18nc("@label", "Spoon Handle Width")
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter

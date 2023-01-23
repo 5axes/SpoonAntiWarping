@@ -71,13 +71,18 @@ msgstr "Supprimer Derniers"
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
-msgid "Size"
-msgstr "Taille"
+msgid "Diameter"
+msgstr "Diamètre"
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
-msgid "X/Y Distance"
-msgstr "Distance X/Y"
+msgid "Spoon Handle Length"
+msgstr "Longueur manche de la cuillère"
+
+#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+msgctxt "@label"
+msgid "Spoon Handle Widthh"
+msgstr "Largeur manche de la cuillère"
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"

@@ -384,37 +384,19 @@ class SpoonAntiWarping(Tool):
         r = size / 2
         # First layer length
         sup = -lg + He
-        l = -lg
-        if length>0 and width>0 :
-            adep=math.atan((0.5*width)/length)
-        else:
-            adep=0
-       
-        adepdeg = math.degrees(adep)
-        
-        Logger.log('d', 'adep    : ' + str(adep)) 
-        Logger.log('d', 'adepdeg : ' + str(adepdeg))
+        l = -lg        
         
         rng = int(360 / nb)
         ang = math.radians(nb)
         
         verts = []
         
-        # Add Round Part of the Spoon
-        nbv=24 
+        # Add the handle of the spoon        
         s_sup = width / 2
         s_inf = s_sup
         
         """
-        verts = [ # 6 faces with 4 corners each
-            [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ s_sup,  sup,  s_sup], [ s_inf, l,  s_inf],
-            [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ s_inf, l, -s_inf], [ s_sup,  sup, -s_sup],
-            [ s_inf, l, -s_inf], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ s_inf, l,  s_inf],
-            [-s_sup,  sup, -s_sup], [ s_sup,  sup, -s_sup], [ s_sup,  sup,  s_sup], [-s_sup,  sup,  s_sup],
-            [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup],
-            [ s_inf, l, -s_inf], [ s_inf, l,  s_inf], [ s_sup,  sup,  s_sup], [ s_sup,  sup, -s_sup]
-        ]
-        """
+        nbv=24 
         verts = [ # 6 faces with 4 corners each
             [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ length,  sup,  s_sup], [ length, l,  s_inf],
             [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ length, l, -s_inf], [ length,  sup, -s_sup],
@@ -422,27 +404,94 @@ class SpoonAntiWarping(Tool):
             [-s_sup,  sup, -s_sup], [ length,  sup, -s_sup], [ length,  sup,  s_sup], [-s_sup,  sup,  s_sup],
             [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup],
             [ length, l, -s_inf], [ length, l,  s_inf], [ length,  sup,  s_sup], [ length,  sup, -s_sup]
+        ]
+        """
+        nbv=20 
+        verts = [ # 5 faces with 4 corners each
+            [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ length,  sup,  s_sup], [ length, l,  s_inf],
+            [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ length, l, -s_inf], [ length,  sup, -s_sup],
+            [ length, l, -s_inf], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ length, l,  s_inf],
+            [-s_sup,  sup, -s_sup], [ length,  sup, -s_sup], [ length,  sup,  s_sup], [-s_sup,  sup,  s_sup],
+            [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup]
         ]               
         
         # Add Round Part of the Spoon
+        nbvr = 0
+        remain1 = 0
+        remain2 = 0
+
         for i in range(0, rng):
-            # Top
-            verts.append([length+r+0, sup, 0])
-            verts.append([length+r+r*math.cos((i+1)*ang), sup, r*math.sin((i+1)*ang)])
-            verts.append([length+r+r*math.cos(i*ang), sup, r*math.sin(i*ang)])
-            #Side 1a
-            verts.append([length+r+r*math.cos(i*ang), sup, r*math.sin(i*ang)])
-            verts.append([length+r+r*math.cos((i+1)*ang), sup, r*math.sin((i+1)*ang)])
-            verts.append([length+r+r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
-            #Side 1b
-            verts.append([length+r+r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
-            verts.append([length+r+r*math.cos(i*ang), l, r*math.sin(i*ang)])
-            verts.append([length+r+r*math.cos(i*ang), sup, r*math.sin(i*ang)])
-            #Bottom 
-            verts.append([length+r+0, l, 0])
-            verts.append([length+r+r*math.cos(i*ang), l, r*math.sin(i*ang)])
-            verts.append([length+r+r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])          
-            
+            if (r*math.cos((i+1)*ang)) >= 0 or (abs(r*math.sin((i+1)*ang)) > s_sup and abs(r*math.sin(i*ang)) > s_sup)  :
+                nbvr += 1
+                # Top
+                verts.append([length+r, sup, 0])
+                verts.append([length+r+r*math.cos((i+1)*ang), sup, r*math.sin((i+1)*ang)])
+                verts.append([length+r+r*math.cos(i*ang), sup, r*math.sin(i*ang)])
+                #Side 1a
+                verts.append([length+r+r*math.cos(i*ang), sup, r*math.sin(i*ang)])
+                verts.append([length+r+r*math.cos((i+1)*ang), sup, r*math.sin((i+1)*ang)])
+                verts.append([length+r+r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
+                #Side 1b
+                verts.append([length+r+r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])
+                verts.append([length+r+r*math.cos(i*ang), l, r*math.sin(i*ang)])
+                verts.append([length+r+r*math.cos(i*ang), sup, r*math.sin(i*ang)])
+                #Bottom 
+                verts.append([length+r, l, 0])
+                verts.append([length+r+r*math.cos(i*ang), l, r*math.sin(i*ang)])
+                verts.append([length+r+r*math.cos((i+1)*ang), l, r*math.sin((i+1)*ang)])  
+            else :
+                if remain1 == 0 :
+                    remain1 = i*ang
+                    remain2 = 2*math.pi-remain1
+                    
+                    nbvr += 1
+                    # Top
+                    verts.append([length+r, sup, 0])
+                    verts.append([length, sup, s_sup])
+                    verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                    #Side 1a
+                    verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                    verts.append([length, sup, s_sup])
+                    verts.append([length, l, s_inf])
+                    #Side 1b
+                    verts.append([length, l, s_inf])
+                    verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
+                    verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                    #Bottom 
+                    verts.append([length+r, l, 0])
+                    verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
+                    verts.append([length, l, s_inf])  
+                    
+                    nbvr += 1 
+                    # Top
+                    verts.append([length+r, sup, 0])
+                    verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
+                    verts.append([length, sup, -s_sup])
+                    #Side 1a
+                    verts.append([length, sup, -s_sup])
+                    verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
+                    verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
+                    #Side 1b
+                    verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
+                    verts.append([length, l, -s_inf])
+                    verts.append([length, sup, -s_sup])
+                    #Bottom 
+                    verts.append([length+r, l, 0])
+                    verts.append([length, l, -s_inf])
+                    verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)]) 
+                                   
+       
+        # Add link part between handle and Round Part
+        # Top center
+        verts.append([length, sup, s_sup])
+        verts.append([length+r, sup, 0])
+        verts.append([length, sup, -s_sup])
+        
+        #Bottom  center
+        verts.append([length, l, -s_inf])
+        verts.append([length+r, l, 0])
+        verts.append([length, l, s_inf])
+
         mesh.setVertices(numpy.asarray(verts, dtype=numpy.float32))
 
         indices = []
@@ -451,7 +500,7 @@ class SpoonAntiWarping(Tool):
             indices.append([i, i+3, i+2])
             
         # for every angle increment 12 Vertices
-        tot = rng * 12 + nbv
+        tot = nbvr * 12 + 6 + nbv 
         for i in range(nbv, tot, 3): # 
             indices.append([i, i+1, i+2])
         mesh.setIndices(numpy.asarray(indices, dtype=numpy.int32))

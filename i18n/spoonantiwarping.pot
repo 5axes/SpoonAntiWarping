@@ -69,17 +69,17 @@ msgstr ""
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
-msgid "Size"
+msgid "Diameter"
 msgstr ""
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
-msgid "Spoon Length"
+msgid "Spoon Handle Length"
 msgstr ""
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
-msgid "Spoon Width"
+msgid "Spoon Handle Width"
 msgstr ""
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
