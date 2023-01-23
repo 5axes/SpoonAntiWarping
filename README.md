@@ -26,3 +26,8 @@ In order for the Spoon Anti-warping plugin to work correctly in the Cura slicing
 
 
 Even if the user does not want to use the raft for the final print, it is necessary to have it enabled while using the Spoon Anti-warping plugin. The plugin uses the raft to anchor the tabs, so without it, the tabs will not be able to hold the object in place and prevent warping. Once the print is complete, the raft can be easily removed, and the tabs will be left to hold the object.
+
+
+#### YouTube video
+
+[![Spoon Anti-Warping](http://img.youtube.com/vi/K2niowptW7M/0.jpg)](https://www.youtube.com/watch?v=K2niowptW7M)
