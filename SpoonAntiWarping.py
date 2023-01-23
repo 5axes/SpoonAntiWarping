@@ -383,7 +383,7 @@ class SpoonAntiWarping(Tool):
         self._had_selection = has_selection
  
         
-    # Cylinder creation
+    # SPOON creation
     def _createSpoon(self, size , length , width , nb , lg, He , angle):   
         mesh = MeshBuilder()
         # Per-vertex normals require duplication of vertices
@@ -637,7 +637,7 @@ class SpoonAntiWarping(Tool):
                         if Start_Id != End_Id :
                             Logger.log('d', "Possibility   : {} / {}".format(Start_Id,End_Id))
                             Id=int(Start_Id+0.5*(End_Id-Start_Id))
-                            Logger.log('d', "Id   : {}".format(Id))
+                            #Logger.log('d', "Id   : {}".format(Id))
                             new_position = Vector(points[Id][0], 0, points[Id][1])
                             lg=calc_position-new_position                            
                             unit_vector2 = lg.normalized()
@@ -651,13 +651,13 @@ class SpoonAntiWarping(Tool):
                             else :
                                 Angle = -LeSin
                                     
-                        Logger.log('d', "Pick_position   : {}".format(calc_position))
-                        Logger.log('d', "Close_position  : {}".format(Select_position))
-                        Logger.log('d', "Unit_vector2  : {}".format(unit_vector2))
-                        Logger.log('d', "Angle Sinus     : {}".format(math.degrees(LeSin)))
-                        Logger.log('d', "Angle Cosinus   : {}".format(math.degrees(LeCos)))
+                        #Logger.log('d', "Pick_position   : {}".format(calc_position))
+                        #Logger.log('d', "Close_position  : {}".format(Select_position))
+                        #Logger.log('d', "Unit_vector2  : {}".format(unit_vector2))
+                        #Logger.log('d', "Angle Sinus     : {}".format(math.degrees(LeSin)))
+                        #Logger.log('d', "Angle Cosinus   : {}".format(math.degrees(LeCos)))
                         #Logger.log('d', "Angle Tangente  : {}".format(math.degrees(LaTan)))
-                        Logger.log('d', "Chose Angle     : {}".format(math.degrees(Angle)))
+                        #Logger.log('d', "Chose Angle     : {}".format(math.degrees(Angle)))
         return Angle
     
     # Automatic creation    
