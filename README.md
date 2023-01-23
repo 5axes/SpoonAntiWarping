@@ -11,6 +11,20 @@ Tabs are small, flat extensions that are added to the edges of the object. These
 
 I have already an [Tab anti-warping plugin](https://github.com/5axes/TabPlus) but it's not really compatible with the creation of support. With this plugin we can create anti-warping tab as well as support for the print.
 
+## Installation
+
+First, make sure your Cura version is  4.8 or newer.
+
+[Download](https://github.com/5axes/SpoonAntiWarping/archive/refs/heads/main.zip) or clone the repository into `[Cura configuration folder]/plugins/SpoonAntiWarping`.
+
+The configuration folder can be found via **Help** -> **Show Configuration Folder** inside Cura.
+
+This menu opens the following folder:
+* Windows: `%APPDATA%\cura\<Cura version>\`, (usually `C:\Users\<your username>\AppData\Roaming\cura\<Cura version>\`)
+* Mac OS: `$HOME/Library/Application Support/cura/<Cura version>/`
+* Linux: `$HOME/.local/share/cura/<Cura version>/`
+
+
 ### How to use it
 
 The Spoon Anti-warping plugin offers two methods for adding tabs to a 3D printed object: manual and automatic.
