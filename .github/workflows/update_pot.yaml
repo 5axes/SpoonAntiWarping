@@ -31,4 +31,5 @@ jobs:
         with:
           commit_message: Update i18n template
           branch: release
+          repository: .
           create_branch: true
