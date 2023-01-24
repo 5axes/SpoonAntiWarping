@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Custom Support Cylinder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-11 15:10+0000\n"
-"PO-Revision-Date: 2023-01-19 00:27+0200\n"
+"PO-Revision-Date: 2023-01-24 09:54+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: __init__.py:23
 msgctxt "@label"
 msgid "Spoon Anti-Warping"
-msgstr "Cuillère Anti-gauchissement"
+msgstr "Cuillère Anti-Décollement"
 
 #: __init__.py:24
 msgctxt "@info:tooltip"
@@ -30,7 +30,7 @@ msgstr "Ajouter automatique Cuillère Anti-gauchissement"
 #: SpoonAntiWarping.py:
 msgctxt "@info:title"
 msgid "Spoon Anti-Warping"
-msgstr "Cuillère Anti-gauchissement"
+msgstr "Cuillère Anti-Décollement"
 
 #: SpoonAntiWarping.py::
 msgctxt "@label"
@@ -42,6 +42,28 @@ msgctxt "@label"
 msgid "Remove Last"
 msgstr "Supprimer Derniers"
 
+#: SpoonAntiWarping.py:
+msgctxt "@info:title"
+msgid "Warning ! Spoon Anti-Warping"
+msgstr "Attention ! Cuillère Anti-Décollement"
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:label"
+msgid "Info modification current profile '"
+msgstr "Information modification du profil actuel Paramètre '"
+
+#: TabPlus.py:
+msgctxt "@info:label"
+msgid "' parameter\nNew value : "
+msgstr ""
+"'\n"
+"Nouvelle valeur : "
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:label"
+msgid "Skirt"
+msgstr "Jupe"
+
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
 msgid "Diameter"
@@ -50,12 +72,12 @@ msgstr "Diamètre"
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
 msgid "Spoon Handle Length"
-msgstr "Longueur manche de la cuillère"
+msgstr "Longueur attache de la cuillère"
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
 msgid "Spoon Handle Width"
-msgstr "Largeur manche de la cuillère"
+msgstr "Largeur attache de la cuillère"
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
@@ -66,4 +88,3 @@ msgstr "Nombre de couches"
 msgctxt "@label"
 msgid "Automatic Addition"
 msgstr "Ajout automatique"
-

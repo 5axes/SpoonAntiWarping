@@ -1,6 +1,6 @@
-#--------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------
 # Copyright (c) 2023 5@xes
-#--------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------
 # Based on the TabPlus plugin by 5@xes, and licensed under LGPLv3 or higher.
 #
 #  https://github.com/5axes/TabPlus
@@ -8,6 +8,8 @@
 # All modification 5@xes
 # First release  22-01-2023  First proof of concept
 # Second release  23-01-2023  Limit the number of Tab with Circular element
+#------------------------------------------------------------------------------------------------------------------
+# V0.0.3 24-01-2023 Test if the adherence is set
 #------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
@@ -90,6 +92,7 @@ class SpoonAntiWarping(Tool):
         self._UseLength = 2.0
         self._UseWidth = 2.0
         self._Nb_Layer = 1
+        self._Mesg = False # To avoid message 
         self._SMsg = catalog.i18nc("@message", "Remove All") 
 
         # Shortcut
@@ -208,7 +211,24 @@ class SpoonAntiWarping(Tool):
 
             node_stack = picked_node.callDecoration("getStack")
 
-            
+            # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
+            # has not done yet.
+            global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+            #extruder = global_container_stack.extruderList[int(_id_ex)] 
+            extruder_stack = CuraApplication.getInstance().getExtruderManager().getActiveExtruderStacks()[0]
+            key = "adhesion_type"
+            adhesion=global_container_stack.getProperty(key, "value") 
+            Logger.log('d', "Info adhesion_type --> " + str(adhesion))   
+            if adhesion ==  'none' and not self._Mesg :
+                definition_key=key + " label"
+                untranslated_label=extruder_stack.getProperty(key,"label")
+                translated_label=i18n_catalog.i18nc(definition_key, untranslated_label) 
+                Format_String = catalog.i18nc("@info:label", "Info modification current profile '") + translated_label  + catalog.i18nc("@info:label", "' parameter\nNew value : ") + catalog.i18nc("@info:label", "Skirt")
+                Message(text = Format_String, title = catalog.i18nc("@info:title", "Warning ! Spoon Anti-Warping")).show()
+                # Define support_type=everywhere
+                global_container_stack.setProperty(key, "value", 'skirt')
+                self._Mesg = True
+
             if node_stack: 
                 if node_stack.getProperty("spoon_mesh", "value"):
                     self._removeSpoonMesh(picked_node)

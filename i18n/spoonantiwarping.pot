@@ -42,6 +42,26 @@ msgctxt "@label"
 msgid "Remove Last"
 msgstr ""
 
+#: SpoonAntiWarping.py:
+msgctxt "@info:title"
+msgid "Warning ! Spoon Anti-Warping"
+msgstr ""
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:label"
+msgid "Info modification current profile '"
+msgstr ""
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:label"
+msgid "' parameter\nNew value : "
+msgstr ""
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:label"
+msgid "Skirt"
+msgstr ""
+
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
 msgid "Diameter"
