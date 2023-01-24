@@ -24,7 +24,7 @@ jobs:
       - run: git add --intent-to-add i18n
       - name: Check diff
         id: git_diff
-        run: echo "##[set-output name=numstat;]$(git diff --numstat i18n)" >> $GITHUB_OUTPUT
+        run: git diff --numstat i18n
 
       - if: ${{steps.git_diff.outputs.numstat != '1 1 i18n/spoonantiwarping.pot'}}
         uses: stefanzweifel/git-auto-commit-action@v4
