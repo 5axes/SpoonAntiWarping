@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Spoon Anti-Warping package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Spoon Anti-Warping\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-23 15:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: __init__.py:23
+msgctxt "@label"
+msgid "Spoon Anti-Warping"
+msgstr ""
+
+#: __init__.py:24
+msgctxt "@info:tooltip"
+msgid "Add Automatique Anti-Warping Spoon"
+msgstr ""
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:title"
+msgid "Spoon Anti-Warping"
+msgstr ""
+
+#: SpoonAntiWarping.py::
+msgctxt "@label"
+msgid "Remove All"
+msgstr ""
+
+#: SpoonAntiWarping.py::
+msgctxt "@label"
+msgid "Remove Last"
+msgstr ""
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:title"
+msgid "Warning ! Spoon Anti-Warping"
+msgstr ""
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:label"
+msgid "Info modification current profile '"
+msgstr ""
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:label"
+msgid "' parameter\nNew value : "
+msgstr ""
+
+#: SpoonAntiWarping.py:
+msgctxt "@info:label"
+msgid "Skirt"
+msgstr ""
+
+#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+msgctxt "@label"
+msgid "Diameter"
+msgstr ""
+
+#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+msgctxt "@label"
+msgid "Spoon Handle Length"
+msgstr ""
+
+#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+msgctxt "@label"
+msgid "Spoon Handle Width"
+msgstr ""
+
+#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+msgctxt "@label"
+msgid "Number of layers"
+msgstr ""
+
+#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+msgctxt "@label"
+msgid "Automatic Addition"
+msgstr ""
