@@ -216,9 +216,10 @@ class SpoonAntiWarping(Tool):
                 if node_stack.getProperty("spoon_mesh", "value"):
                     self._removeSpoonMesh(picked_node)
                     return
-
-                elif node_stack.getProperty("anti_overhang_mesh", "value") or node_stack.getProperty("infill_mesh", "value") : # or node_stack.getProperty("support_mesh", "value"):
+                
+                elif node_stack.getProperty("anti_overhang_mesh", "value") or node_stack.getProperty("infill_mesh", "value") or node_stack.getProperty("support_mesh", "value"):
                     # Only "normal" meshes can have spoon_mesh added to them
+                    # Try to add also to support but as support got a X/Y distance/ part it's useless
                     return
 
             # Create a pass for picking a world-space location from the mouse location
@@ -274,10 +275,8 @@ class SpoonAntiWarping(Tool):
     def _createSpoonMesh(self, parent: CuraSceneNode, position: Vector):
         node = CuraSceneNode()
         EName = parent.getName()
-        Logger.log('d', "Info createSpoonMesh for --> " + str(EName))
-        
         Angle = self.defineAngle(EName,position)
-        Logger.log('d', "Info createSpoonMesh Angle --> " + str(Angle))
+        # Logger.log('d', "Info createSpoonMesh Angle --> " + str(Angle))
         
         node.setName("RoundTab")
             
