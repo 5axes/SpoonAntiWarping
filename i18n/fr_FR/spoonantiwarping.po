@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Custom Support Cylinder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-11 15:10+0000\n"
-"PO-Revision-Date: 2023-01-24 09:54+0200\n"
+"PO-Revision-Date: 2023-01-24 15:28+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -25,7 +25,7 @@ msgstr "Cuillère Anti-Décollement"
 #: __init__.py:24
 msgctxt "@info:tooltip"
 msgid "Add Automatique Anti-Warping Spoon"
-msgstr "Ajouter automatique Cuillère Anti-gauchissement"
+msgstr "Ajouter automatique Cuillère Anti-Décollement"
 
 #: SpoonAntiWarping.py:
 msgctxt "@info:title"
@@ -72,12 +72,12 @@ msgstr "Diamètre"
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
 msgid "Spoon Handle Length"
-msgstr "Longueur attache de la cuillère"
+msgstr "Longueur Attache"
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
 msgid "Spoon Handle Width"
-msgstr "Largeur attache de la cuillère"
+msgstr "Largeur Attache"
 
 #: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
 msgctxt "@label"
