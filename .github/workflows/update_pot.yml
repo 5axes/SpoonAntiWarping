@@ -22,6 +22,10 @@ jobs:
       - name: Find strings in QML files
         run: xgettext --package-name='Spoon Anti-Warping' -o i18n/spoonantiwarping.pot --join-existing --language=javascript --from-code=UTF-8 -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki18ncp:1c,2,3 $(find -L . -name \*.qml)
       - run: git add --intent-to-add i18n
+      
+      - name: Check diff
+        id: git_diff
+        run: echo "##[set-output name=numstat;]$(git diff --numstat i18n)"
 
 
       - if: ${{steps.git_diff.outputs.numstat != '1 1 i18n/spoonantiwarping.pot'}}
