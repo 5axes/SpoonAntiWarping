@@ -279,7 +279,7 @@ class SpoonAntiWarping(Tool):
         Angle = self.defineAngle(EName,position)
         # Logger.log('d', "Info createSpoonMesh Angle --> " + str(Angle))
         
-        node.setName("RoundTab")
+        node.setName("SpoonTab")
             
         node.setSelectable(True)
         
