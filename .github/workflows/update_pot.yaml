@@ -31,5 +31,5 @@ jobs:
         with:
           commit_message: Update i18n template
           branch: release
-          repository: .
+          skip_dirty_check: true
           create_branch: true
