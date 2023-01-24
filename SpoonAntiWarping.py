@@ -674,13 +674,13 @@ class SpoonAntiWarping(Tool):
                             else :
                                 Angle = -LeSin
                                     
-                        #Logger.log('d', "Pick_position   : {}".format(calc_position))
-                        #Logger.log('d', "Close_position  : {}".format(Select_position))
-                        #Logger.log('d', "Unit_vector2  : {}".format(unit_vector2))
-                        #Logger.log('d', "Angle Sinus     : {}".format(math.degrees(LeSin)))
-                        #Logger.log('d', "Angle Cosinus   : {}".format(math.degrees(LeCos)))
-                        #Logger.log('d', "Angle Tangente  : {}".format(math.degrees(LaTan)))
-                        #Logger.log('d', "Chose Angle     : {}".format(math.degrees(Angle)))
+                        # Logger.log('d', "Pick_position   : {}".format(calc_position))
+                        # Logger.log('d', "Close_position  : {}".format(Select_position))
+                        # Logger.log('d', "Unit_vector2    : {}".format(unit_vector2))
+                        # Logger.log('d', "Angle Sinus     : {}".format(math.degrees(LeSin)))
+                        # Logger.log('d', "Angle Cosinus   : {}".format(math.degrees(LeCos)))
+                        # Logger.log('d', "Angle Tangente  : {}".format(math.degrees(LaTan)))
+                        # Logger.log('d', "Chose Angle     : {}".format(math.degrees(Angle)))
         return Angle
     
     # Automatic creation    
