@@ -44,9 +44,9 @@ The manual method allows users to manually select the position of the tabs on th
 
 - **Clicking existing Tab deletes it**
 
-- **Clicking existing Tab + Ctrl** switch automaticaly to the ***Rotatle Tool*** to modify the position of the "Spoon Anti-Warping".
+- **Clicking existing Tab + Ctrl** switch automaticaly to the ***Rotate Tool*** to modify the orientation of the "Spoon Anti-Warping" tab.
 
-* The height of the tabs is automaticaly set to the Initial Layer Height.
+* The height of the tabs is automaticaly set to the Initial Layer Height + layer height according to the number of layer define in the plugin options.
 
 >Note: it's easier to add/remove tabs when you are in "Solid View" mode
 
