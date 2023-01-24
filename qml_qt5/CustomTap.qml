@@ -89,7 +89,7 @@ Item
             text: UM.ActiveTool.properties.getValue("SSize")
             validator: DoubleValidator
             {
-                decimals: 2
+                decimals: 1
                 bottom: 0.1
                 locale: "en_US"
             }
@@ -111,7 +111,8 @@ Item
             text: UM.ActiveTool.properties.getValue("SLength")
             validator: DoubleValidator
             {
-                decimals: 3
+                decimals: 2
+				bottom: 0
                 locale: "en_US"
             }
 
@@ -132,7 +133,8 @@ Item
             text: UM.ActiveTool.properties.getValue("SWidth")
             validator: DoubleValidator
             {
-                decimals: 3
+                decimals: 2
+				bottom: 0
                 locale: "en_US"
             }
 

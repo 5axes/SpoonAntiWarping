@@ -1,6 +1,6 @@
-#------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------
 # Copyright (c) 2023 5@xes
-#------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------
 # Based on the TabPlus plugin by 5@xes, and licensed under LGPLv3 or higher.
 #
 #  https://github.com/5axes/TabPlus
@@ -8,9 +8,10 @@
 # All modification 5@xes
 # First release  22-01-2023  First proof of concept
 # Second release  23-01-2023  Limit the number of Tab with Circular element
-#------------------------------------------------------------------------------------------------------------------
-# V0.0.3 24-01-2023 Test if the adherence is set
-#------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------
+# V0.0.3 24-01-2023 Test if the adherence is set, if not set to Skirt   / Test the value for the length and the width of the handle
+#                                                                           Can be equal to Zero
+#--------------------------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
 try:
@@ -786,7 +787,51 @@ class SpoonAntiWarping(Tool):
         #Logger.log('d', 's_value : ' + str(s_value))        
         self._UseSize = s_value
         self._preferences.setValue("spoon_anti_warping/s_size", s_value)
+        
+    def getSLength(self) -> float:
+        """ 
+            return: golabl _UseLength  in mm.
+        """           
+        return self._UseLength
+  
+    def setSLength(self, SLength: str) -> None:
+        """
+        param SLength: SLength in mm.
+        """
  
+        try:
+            s_value = float(SLength)
+        except ValueError:
+            return
+
+        if s_value < 0:
+            return         
+        #Logger.log('d', 's_value : ' + str(s_value))        
+        self._UseLength = s_value
+        self._preferences.setValue("spoon_anti_warping/s_length", s_value) 
+
+    def getSWidth(self) -> float:
+        """ 
+            return: golabl _UseWidth  in mm.
+        """           
+        return self._UseWidth
+  
+    def setSWidth(self, SWidth: str) -> None:
+        """
+        param SWidth : SWidth in mm.
+        """
+ 
+        try:
+            s_value = float(SWidth)
+        except ValueError:
+            return
+
+        if s_value < 0:
+            return         
+        #Logger.log('d', 's_value : ' + str(s_value))     
+        self._UseWidth = s_value
+        self._preferences.setValue("spoon_anti_warping/s_width", s_value) 
+
     def getNLayer(self) -> int:
         """ 
             return: golabl _Nb_Layer
@@ -810,43 +855,3 @@ class SpoonAntiWarping(Tool):
         #Logger.log('d', 'i_value : ' + str(i_value))        
         self._Nb_Layer = i_value
         self._preferences.setValue("spoon_anti_warping/nb_layer", i_value)
-        
-    def getSLength(self) -> float:
-        """ 
-            return: golabl _UseLength  in mm.
-        """           
-        return self._UseLength
-  
-    def setSLength(self, SLength: str) -> None:
-        """
-        param SLength: SLength in mm.
-        """
- 
-        try:
-            s_value = float(SLength)
-        except ValueError:
-            return
-        
-        #Logger.log('d', 's_value : ' + str(s_value))        
-        self._UseLength = s_value
-        self._preferences.setValue("spoon_anti_warping/s_length", s_value) 
-
-    def getSWidth(self) -> float:
-        """ 
-            return: golabl _UseWidth  in mm.
-        """           
-        return self._UseWidth
-  
-    def setSWidth(self, SWidth: str) -> None:
-        """
-        param SWidth : SWidth in mm.
-        """
- 
-        try:
-            s_value = float(SWidth)
-        except ValueError:
-            return
-        
-        #Logger.log('d', 's_value : ' + str(s_value))     
-        self._UseWidth = s_value
-        self._preferences.setValue("spoon_anti_warping/s_width", s_value) 
