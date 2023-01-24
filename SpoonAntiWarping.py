@@ -211,24 +211,6 @@ class SpoonAntiWarping(Tool):
 
             node_stack = picked_node.callDecoration("getStack")
 
-            # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
-            # has not done yet.
-            global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-            #extruder = global_container_stack.extruderList[int(_id_ex)] 
-            extruder_stack = CuraApplication.getInstance().getExtruderManager().getActiveExtruderStacks()[0]
-            key = "adhesion_type"
-            adhesion=global_container_stack.getProperty(key, "value") 
-            Logger.log('d', "Info adhesion_type --> " + str(adhesion))   
-            if adhesion ==  'none' and not self._Mesg :
-                definition_key=key + " label"
-                untranslated_label=extruder_stack.getProperty(key,"label")
-                translated_label=i18n_catalog.i18nc(definition_key, untranslated_label) 
-                Format_String = catalog.i18nc("@info:label", "Info modification current profile '") + translated_label  + catalog.i18nc("@info:label", "' parameter\nNew value : ") + catalog.i18nc("@info:label", "Skirt")
-                Message(text = Format_String, title = catalog.i18nc("@info:title", "Warning ! Spoon Anti-Warping")).show()
-                # Define support_type=everywhere
-                global_container_stack.setProperty(key, "value", 'skirt')
-                self._Mesg = True
-
             if node_stack: 
                 if node_stack.getProperty("spoon_mesh", "value"):
                     self._removeSpoonMesh(picked_node)
@@ -306,21 +288,35 @@ class SpoonAntiWarping(Tool):
         # get layer_height_0 used to define pastille height
         _id_ex=0
         
-        # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
-        # has not done yet.
+        # This function can be triggered in the middle of a machine change, so do not proceed if the machine change has not done yet.
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         #extruder = global_container_stack.extruderList[int(_id_ex)] 
         extruder_stack = CuraApplication.getInstance().getExtruderManager().getActiveExtruderStacks()[0]     
-        self._Extruder_count=global_container_stack.getProperty("machine_extruder_count", "value") 
-        #Logger.log('d', "Info Extruder_count --> " + str(self._Extruder_count))   
+        #self._Extruder_count=global_container_stack.getProperty("machine_extruder_count", "value") 
         
         _layer_h_i = extruder_stack.getProperty("layer_height_0", "value")
         _layer_height = extruder_stack.getProperty("layer_height", "value")
-        _line_w = extruder_stack.getProperty("line_width", "value")
         # Logger.log('d', 'layer_height_0 : ' + str(_layer_h_i))
         _layer_h = (_layer_h_i * 1.2) + (_layer_height * (self._Nb_Layer -1) )
-        _line_w = _line_w * 1.2 
-        
+
+        key = "adhesion_type"
+        adhesion=global_container_stack.getProperty(key, "value") 
+           
+        if adhesion ==  'none' :
+            if not self._Mesg :
+                definition_key=key + " label"
+                untranslated_label=extruder_stack.getProperty(key,"label")
+                translated_label=i18n_catalog.i18nc(definition_key, untranslated_label) 
+                Format_String = catalog.i18nc("@info:label", "Info modification current profile '") + translated_label  + catalog.i18nc("@info:label", "' parameter\nNew value : ") + catalog.i18nc("@info:label", "Skirt")                
+                Message(text = Format_String, title = catalog.i18nc("@info:title", "Warning ! Spoon Anti-Warping")).show()
+                self._Mesg = True
+            # Define temporary adhesion_type=skirt to force boundary calculation ?
+            Logger.log('d', "Info adhesion_type --> " + str(adhesion))
+            global_container_stack.setProperty(key, "value", 'skirt')     
+            # Set and unset in manual mode works but not in automatic ( almost for the first one as creation is too fast)
+            # global_container_stack.setProperty(key, "value", 'none')
+
+                
         # Spoon creation Diameter , Length, Width, Increment angle 10°, length, layer_height_0*1.2
         mesh = self._createSpoon(self._UseSize,self._UseLength,self._UseWidth, 10,_long,_layer_h , Angle)
         
