@@ -212,12 +212,13 @@ class SpoonAntiWarping(Tool):
             node_stack = picked_node.callDecoration("getStack")
 
             if node_stack: 
+                # if it's a spoon_mesh -> remove it
                 if node_stack.getProperty("spoon_mesh", "value"):
                     self._removeSpoonMesh(picked_node)
                     return
 
-                elif node_stack.getProperty("anti_overhang_mesh", "value") or node_stack.getProperty("infill_mesh", "value") or node_stack.getProperty("support_mesh", "value"):
-                    # Only "normal" meshes can have support_mesh added to them
+                elif node_stack.getProperty("anti_overhang_mesh", "value") or node_stack.getProperty("infill_mesh", "value") : # or node_stack.getProperty("support_mesh", "value"):
+                    # Only "normal" meshes can have spoon_mesh added to them
                     return
 
             # Create a pass for picking a world-space location from the mouse location
@@ -227,9 +228,9 @@ class SpoonAntiWarping(Tool):
 
             picked_position = picking_pass.getPickedPosition(event.x, event.y)
 
-            Logger.log('d', "X : {}".format(picked_position.x))
-            Logger.log('d', "Y : {}".format(picked_position.y))
-            Logger.log('d', "Name : {}".format(node_stack.getName()))
+            # Logger.log('d', "X : {}".format(picked_position.x))
+            # Logger.log('d', "Y : {}".format(picked_position.y))
+            # Logger.log('d', "Name : {}".format(node_stack.getName()))
                             
             # Add the spoon_mesh at the picked location
             self._op = GroupedOperation()
