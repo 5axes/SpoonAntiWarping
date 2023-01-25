@@ -30,5 +30,3 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update i18n template
-          branch: Release
-          create_branch: true
