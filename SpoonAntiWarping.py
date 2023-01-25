@@ -11,6 +11,7 @@
 #--------------------------------------------------------------------------------------------------------------------------------------
 # V0.0.3 24-01-2023 Test if the adherence is set, if not set to Skirt   / Test the value for the length and the width of the handle
 #                                                                           Can be equal to Zero
+# V0.0.4 25-01-2023 Change some label in the i18n files for automatic pot file generation on github
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
