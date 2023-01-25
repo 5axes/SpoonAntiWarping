@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Spoon Anti-Warping\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-25 10:23+0000\n"
-"PO-Revision-Date: 2023-01-25 11:34+0200\n"
+"PO-Revision-Date: 2023-01-25 11:37+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -59,7 +59,7 @@ msgstr "Cuillère Anti-Décollement"
 #: __init__.py:24
 msgctxt "@info:tooltip"
 msgid "Add Automatique Anti-Warping Spoon"
-msgstr "Ajouter automatique Cuillère Anti-Décollement"
+msgstr "Ajout automatique Cuillère Anti-Décollement"
 
 #: qml_qt6/CustomTap.qml:44 qml_qt5/CustomTap.qml:41
 msgctxt "@label"
