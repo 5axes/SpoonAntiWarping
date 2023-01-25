@@ -94,7 +94,7 @@ class SpoonAntiWarping(Tool):
         self._UseWidth = 2.0
         self._Nb_Layer = 1
         self._Mesg = False # To avoid message 
-        self._SMsg = catalog.i18nc("@message", "Remove All") 
+        self._SMsg = catalog.i18nc("@label", "Remove All") 
 
         # Shortcut
         if not VERSION_QT5:
@@ -361,7 +361,7 @@ class SpoonAntiWarping(Tool):
         #op.push()
         node.setPosition(position, CuraSceneNode.TransformSpace.World)
         self._all_picked_node.append(node)
-        self._SMsg = catalog.i18nc("@message", "Remove Last") 
+        self._SMsg = catalog.i18nc("@label", "Remove Last") 
         self.propertyChanged.emit()
         
         CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)
@@ -554,7 +554,7 @@ class SpoonAntiWarping(Tool):
                 if node_stack.getProperty("spoon_mesh", "value"):
                     self._removeSpoonMesh(node)
             self._all_picked_node = []
-            self._SMsg = catalog.i18nc("@message", "Remove All") 
+            self._SMsg = catalog.i18nc("@label", "Remove All") 
             self.propertyChanged.emit()
         else:        
             for node in DepthFirstIterator(self._application.getController().getScene().getRoot()):

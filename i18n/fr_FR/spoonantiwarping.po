@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Spoon Anti-Warping\n"
-"Report-Msgid-Bugs-To: 5axes <5axes@free.fr>\n"
-"POT-Creation-Date: 2023-01-23 15:10+0000\n"
-"PO-Revision-Date: 2023-01-24 19:13+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-25 10:23+0000\n"
+"PO-Revision-Date: 2023-01-25 11:34+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -16,6 +16,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Virtaal 0.7.1\n"
+
+#: SpoonAntiWarping.py:97 SpoonAntiWarping.py:557
+msgctxt "@label"
+msgid "Remove All"
+msgstr "Supprimer Tous"
+
+#: SpoonAntiWarping.py:364
+msgctxt "@label"
+msgid "Remove Last"
+msgstr "Supprimer Derniers"
+
+#: SpoonAntiWarping.py:311
+msgctxt "@info:label"
+msgid "Info modification current profile '"
+msgstr "Information modification du profil actuel Paramètre '"
+
+#: SpoonAntiWarping.py:311
+msgctxt "@info:label"
+msgid ""
+"' parameter\n"
+"New value : "
+msgstr ""
+"'\n"
+"Nouvelle valeur : "
+
+#: SpoonAntiWarping.py:311
+msgctxt "@info:label"
+msgid "Skirt"
+msgstr "Jupe"
+
+#: SpoonAntiWarping.py:312
+msgctxt "@info:title"
+msgid "Warning ! Spoon Anti-Warping"
+msgstr "Attention ! Cuillère Anti-Décollement"
 
 #: __init__.py:23
 msgctxt "@label"
@@ -27,64 +61,31 @@ msgctxt "@info:tooltip"
 msgid "Add Automatique Anti-Warping Spoon"
 msgstr "Ajouter automatique Cuillère Anti-Décollement"
 
-#: SpoonAntiWarping.py:
-msgctxt "@info:title"
-msgid "Spoon Anti-Warping"
-msgstr "Cuillère Anti-Décollement"
-
-#: SpoonAntiWarping.py::
-msgctxt "@label"
-msgid "Remove All"
-msgstr "Supprimer Tous"
-
-#: SpoonAntiWarping.py::
-msgctxt "@label"
-msgid "Remove Last"
-msgstr "Supprimer Derniers"
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:title"
-msgid "Warning ! Spoon Anti-Warping"
-msgstr "Attention ! Cuillère Anti-Décollement"
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "Info modification current profile '"
-msgstr "Information modification du profil actuel Paramètre '"
-
-#: TabPlus.py:
-msgctxt "@info:label"
-msgid "' parameter\nNew value : "
-msgstr ""
-"'\n"
-"Nouvelle valeur : "
-
-#: SpoonAntiWarping.py:
-msgctxt "@info:label"
-msgid "Skirt"
-msgstr "Jupe"
-
-#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+#: qml_qt6/CustomTap.qml:44 qml_qt5/CustomTap.qml:41
 msgctxt "@label"
 msgid "Diameter"
 msgstr "Diamètre"
 
-#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+#: qml_qt6/CustomTap.qml:76 qml_qt5/CustomTap.qml:52
 msgctxt "@label"
 msgid "Spoon Handle Length"
 msgstr "Longueur Attache"
 
-#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+#: qml_qt6/CustomTap.qml:108 qml_qt5/CustomTap.qml:63
 msgctxt "@label"
 msgid "Spoon Handle Width"
 msgstr "Largeur Attache"
 
-#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+#: qml_qt6/CustomTap.qml:140 qml_qt5/CustomTap.qml:74
 msgctxt "@label"
 msgid "Number of layers"
 msgstr "Nombre de couches"
 
-#: qml_qt6/CustomTab.qml: qml_qt5/CustomTab.qml:
+#: qml_qt6/CustomTap.qml:207 qml_qt5/CustomTap.qml:204
 msgctxt "@label"
 msgid "Automatic Addition"
 msgstr "Ajout automatique"
+
+#~ msgctxt "@info:title"
+#~ msgid "Spoon Anti-Warping"
+#~ msgstr "Cuillère Anti-Décollement"

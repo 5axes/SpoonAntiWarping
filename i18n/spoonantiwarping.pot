@@ -18,8 +18,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: SpoonAntiWarping.py:97 SpoonAntiWarping.py:557
-msgctxt "@message"
+msgctxt "@label"
 msgid "Remove All"
+msgstr ""
+
+#: SpoonAntiWarping.py:364
+msgctxt "@label"
+msgid "Remove Last"
 msgstr ""
 
 #: SpoonAntiWarping.py:311
@@ -42,11 +47,6 @@ msgstr ""
 #: SpoonAntiWarping.py:312
 msgctxt "@info:title"
 msgid "Warning ! Spoon Anti-Warping"
-msgstr ""
-
-#: SpoonAntiWarping.py:364
-msgctxt "@message"
-msgid "Remove Last"
 msgstr ""
 
 #: __init__.py:23
