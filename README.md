@@ -13,7 +13,7 @@ I have already an [Tab anti-warping plugin](https://github.com/5axes/TabPlus) bu
 
 ## Installation
 
-First, make sure your Cura version is  4.8 or newer.
+First, make sure your Cura version is 4.8 or newer.
 
 [Download](https://github.com/5axes/SpoonAntiWarping/archive/refs/heads/main.zip) or clone the repository into `[Cura configuration folder]/plugins/SpoonAntiWarping`.
 
