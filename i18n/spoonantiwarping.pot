@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spoon Anti-Warping\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-25 10:23+0000\n"
+"POT-Creation-Date: 2023-01-25 10:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,36 +17,36 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: SpoonAntiWarping.py:97 SpoonAntiWarping.py:557
+#: SpoonAntiWarping.py:98 SpoonAntiWarping.py:558
 msgctxt "@label"
 msgid "Remove All"
 msgstr ""
 
-#: SpoonAntiWarping.py:364
-msgctxt "@label"
-msgid "Remove Last"
-msgstr ""
-
-#: SpoonAntiWarping.py:311
+#: SpoonAntiWarping.py:312
 msgctxt "@info:label"
 msgid "Info modification current profile '"
 msgstr ""
 
-#: SpoonAntiWarping.py:311
+#: SpoonAntiWarping.py:312
 msgctxt "@info:label"
 msgid ""
 "' parameter\n"
 "New value : "
 msgstr ""
 
-#: SpoonAntiWarping.py:311
+#: SpoonAntiWarping.py:312
 msgctxt "@info:label"
 msgid "Skirt"
 msgstr ""
 
-#: SpoonAntiWarping.py:312
+#: SpoonAntiWarping.py:313
 msgctxt "@info:title"
 msgid "Warning ! Spoon Anti-Warping"
+msgstr ""
+
+#: SpoonAntiWarping.py:365
+msgctxt "@label"
+msgid "Remove Last"
 msgstr ""
 
 #: __init__.py:23
