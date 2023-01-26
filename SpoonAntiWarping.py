@@ -279,6 +279,8 @@ class SpoonAntiWarping(Tool):
         EName = parent.getName()
         Angle = self.defineAngle(EName,position)
         # Logger.log('d', "Info createSpoonMesh Angle --> " + str(Angle))
+        # local_transformation = parent.getLocalTransformation()
+        # Logger.log('d', "Parent local_transformation --> " + str(local_transformation))
         
         node.setName("SpoonTab")
             
@@ -322,6 +324,7 @@ class SpoonAntiWarping(Tool):
         # Spoon creation Diameter , Length, Width, Increment angle 10°, length, layer_height_0*1.2
         mesh = self._createSpoon(self._UseSize,self._UseLength,self._UseWidth, 10,_long,_layer_h , Angle)
         
+        # new_transformation = Matrix()
         node.setMeshData(mesh.build())
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
@@ -356,11 +359,12 @@ class SpoonAntiWarping(Tool):
         #extruder = global_container_stack.extruderList[int(id_ex)]    
                 
         #self._op = GroupedOperation()
-        # First add node to the scene at the correct position/scale, before parenting, so the support mesh does not get scaled with the parent
-        self._op.addOperation(AddSceneNodeOperation(node, self._controller.getScene().getRoot()))
-        self._op.addOperation(SetParentOperation(node, parent))
-        #op.push()
-        node.setPosition(position, CuraSceneNode.TransformSpace.World)
+        # First add node to the scene at the correct position/scale, before parenting, so the Spoon mesh does not get scaled with the parent
+        self._op.addOperation(AddSceneNodeOperation(node, self._controller.getScene().getRoot())) # This one will set the model with the right transformation
+        self._op.addOperation(SetParentOperation(node, parent)) # This one will link the tab with the parent ( Scale)
+        
+        node.setPosition(position, CuraSceneNode.TransformSpace.World)  # Set the World Transformmation
+        
         self._all_picked_node.append(node)
         self._SMsg = catalog.i18nc("@label", "Remove Last") 
         self.propertyChanged.emit()
