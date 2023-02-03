@@ -183,7 +183,7 @@ class SpoonAntiWarping(Tool):
         }
         ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
         self._application.fileCompleted.connect(self._onFileCompleted)
-        Logger.log('d', "Info CuraVersion --> " + str(CuraVersion))
+        # Logger.log('d', "Info CuraVersion --> " + str(CuraVersion))
 
     def _onFileCompleted(self) -> None:
         # Reset Stock Data  
