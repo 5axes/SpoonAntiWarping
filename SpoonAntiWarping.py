@@ -12,6 +12,7 @@
 # V0.0.3 24-01-2023 Test if the adherence is set, if not set to Skirt   / Test the value for the length and the width of the handle
 #                                                                           Can be equal to Zero
 # V0.0.4 25-01-2023 Change some label in the i18n files for automatic pot file generation on github
+# V0.0.5 03-02-2023 Reset data for delete tabs on a new fileload
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
@@ -181,9 +182,14 @@ class SpoonAntiWarping(Tool):
             "settable_globally": False
         }
         ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
-        
+        self._application.fileCompleted.connect(self._onFileCompleted)
         Logger.log('d', "Info CuraVersion --> " + str(CuraVersion))
-                
+
+    def _onFileCompleted(self) -> None:
+        # Reset Stock Data  
+        self._all_picked_node = []
+        self._SMsg = catalog.i18nc("@label", "Remove All") 
+            
     def event(self, event):
         super().event(event)
         modifiers = QApplication.keyboardModifiers()
@@ -694,6 +700,10 @@ class SpoonAntiWarping(Tool):
         nodes_list = self._getAllSelectedNodes()
         if not nodes_list:
             nodes_list = DepthFirstIterator(self._application.getController().getScene().getRoot())
+
+        if self._all_picked_node:
+            self._all_picked_node = []
+            self._SMsg = catalog.i18nc("@label", "Remove All") 
         
         self._op = GroupedOperation()   
         for node in nodes_list:
