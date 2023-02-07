@@ -13,6 +13,7 @@
 #                                                                           Can be equal to Zero
 # V0.0.4 25-01-2023 Change some label in the i18n files for automatic pot file generation on github
 # V0.0.5 03-02-2023 Reset data for delete tabs on a new fileload
+# V0.0.6 07-02-2023 Change position of Angle calculation
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
@@ -66,6 +67,7 @@ from UM.Tool import Tool
 import os.path 
 import math
 import numpy as np
+import time
 
 from UM.Resources import Resources
 from UM.i18n import i18nCatalog
@@ -283,13 +285,11 @@ class SpoonAntiWarping(Tool):
     def _createSpoonMesh(self, parent: CuraSceneNode, position: Vector):
         node = CuraSceneNode()
         EName = parent.getName()
-        Angle = self.defineAngle(EName,position)
-        # Logger.log('d', "Info createSpoonMesh Angle --> " + str(Angle))
+        
         # local_transformation = parent.getLocalTransformation()
         # Logger.log('d', "Parent local_transformation --> " + str(local_transformation))
         
-        node.setName("SpoonTab")
-            
+        node.setName("SpoonTab")           
         node.setSelectable(True)
         
         # long=Support Height
@@ -321,14 +321,14 @@ class SpoonAntiWarping(Tool):
                 Message(text = Format_String, title = catalog.i18nc("@info:title", "Warning ! Spoon Anti-Warping")).show()
                 self._Mesg = True
             # Define temporary adhesion_type=skirt to force boundary calculation ?
-            Logger.log('d', "Info adhesion_type --> " + str(adhesion))
-            global_container_stack.setProperty(key, "value", 'skirt')     
-            # Set and unset in manual mode works but not in automatic ( almost for the first one as creation is too fast)
-            # global_container_stack.setProperty(key, "value", 'none')
+            global_container_stack.setProperty(key, "value", 'skirt')
+            Logger.log('d', "Info adhesion_type --> " + str(adhesion)) 
 
+        _angle = self.defineAngle(EName,position)
+        # Logger.log('d', "Info createSpoonMesh Angle --> " + str(_angle))
                 
         # Spoon creation Diameter , Length, Width, Increment angle 10°, length, layer_height_0*1.2
-        mesh = self._createSpoon(self._UseSize,self._UseLength,self._UseWidth, 10,_long,_layer_h , Angle)
+        mesh = self._createSpoon(self._UseSize,self._UseLength,self._UseWidth, 10,_long,_layer_h , _angle)
         
         # new_transformation = Matrix()
         node.setMeshData(mesh.build())
@@ -668,15 +668,15 @@ class SpoonAntiWarping(Tool):
                         
                         # Could be the case with automatic .. rarely in pickpoint   
                         if Start_Id != End_Id :
-                            Logger.log('d', "Possibility   : {} / {}".format(Start_Id,End_Id))
+                            # Logger.log('d', "Possibility   : {} / {}".format(Start_Id,End_Id))
                             Id=int(Start_Id+0.5*(End_Id-Start_Id))
-                            #Logger.log('d', "Id   : {}".format(Id))
+                            # Logger.log('d', "Id   : {}".format(Id))
                             new_position = Vector(points[Id][0], 0, points[Id][1])
                             lg=calc_position-new_position                            
                             unit_vector2 = lg.normalized()
-                            #Logger.log('d', "unit_vector2 : {}".format(unit_vector2))
+                            # Logger.log('d', "unit_vector2 : {}".format(unit_vector2))
                             LeSin = math.asin(ref.dot(unit_vector2))
-                            #LeCos = math.acos(ref.dot(unit_vector2))
+                            # LeCos = math.acos(ref.dot(unit_vector2))
                             
                             if unit_vector2.x>=0 :
                                 Angle = math.pi+LeSin  #angle in radian
@@ -708,7 +708,7 @@ class SpoonAntiWarping(Tool):
         self._op = GroupedOperation()   
         for node in nodes_list:
             if node.callDecoration("isSliceable"):
-                Logger.log('d', "isSliceable : {}".format(node.getName()))
+                # Logger.log('d', "isSliceable : {}".format(node.getName()))
                 node_stack=node.callDecoration("getStack")           
                 if node_stack: 
                     type_infill_mesh = node_stack.getProperty("infill_mesh", "value")
@@ -719,7 +719,7 @@ class SpoonAntiWarping(Tool):
                     
                     if not type_infill_mesh and not type_support_mesh and not type_anti_overhang_mesh :
                     # and Selection.isSelected(node)
-                        Logger.log('d', "Mesh : {}".format(node.getName()))
+                        # Logger.log('d', "Mesh : {}".format(node.getName()))
                         
                         # hull_polygon = node.callDecoration("getAdhesionArea")
                         # hull_polygon = node.callDecoration("getConvexHull")
