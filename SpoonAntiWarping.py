@@ -67,7 +67,6 @@ from UM.Tool import Tool
 import os.path 
 import math
 import numpy as np
-import time
 
 from UM.Resources import Resources
 from UM.i18n import i18nCatalog
