@@ -24,6 +24,14 @@ This menu opens the following folder:
 * Mac OS: `$HOME/Library/Application Support/cura/<Cura version>/`
 * Linux: `$HOME/.local/share/cura/<Cura version>/`
 
+### Automatic installation for Cura 4.X and Cura 5.X
+
+First, make sure your Cura version is 4.8 or newer. This plugin is now avalaible in the Cura marketplace. So you can install it automaticaly from this place:
+
+![Automatic Install](./images/plugincura.png)
+
+[Spoon Anti-Warping on Ultimaker Market place](https://marketplace.ultimaker.com/app/cura/plugins/5axes/SpoonAntiWarping)
+
 
 ## How to use it
 
