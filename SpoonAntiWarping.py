@@ -14,20 +14,33 @@
 # V0.0.4 25-01-2023 Change some label in the i18n files for automatic pot file generation on github
 # V0.0.5 03-02-2023 Reset data for delete tabs on a new fileload
 # V0.0.6 07-02-2023 Change position of Angle calculation
+# V0.0.7 09-02-2023 Clean the code and Online on Ultimaker Market
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
 try:
-    from PyQt6.QtCore import Qt, QTimer, pyqtProperty, pyqtSignal, pyqtSlot, QUrl
+    from PyQt6.QtCore import Qt, QTimer
     from PyQt6.QtWidgets import QApplication
 except ImportError:
-    from PyQt5.QtCore import Qt, QTimer, pyqtProperty, pyqtSignal, pyqtSlot, QUrl
+    from PyQt5.QtCore import Qt, QTimer
     from PyQt5.QtWidgets import QApplication
     VERSION_QT5 = True
 
+
+import os.path 
+import math
+import numpy as np
+
 from typing import Optional, List
+from collections import OrderedDict
 
 from cura.CuraApplication import CuraApplication
+from cura.PickingPass import PickingPass
+from cura.CuraVersion import CuraVersion  # type: ignore
+from cura.Operations.SetParentOperation import SetParentOperation
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from cura.Scene.CuraSceneNode import CuraSceneNode
 
 from UM.Resources import Resources
 from UM.Logger import Logger
@@ -36,38 +49,18 @@ from UM.Math.Vector import Vector
 from UM.Tool import Tool
 from UM.Event import Event, MouseEvent
 from UM.Mesh.MeshBuilder import MeshBuilder
-
-from cura.PickingPass import PickingPass
-
+from UM.Settings.SettingInstance import SettingInstance
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-
-from collections import OrderedDict
-
-from cura.CuraVersion import CuraVersion  # type: ignore
-from UM.Version import Version
-
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
-from cura.Operations.SetParentOperation import SetParentOperation
-
-from UM.Settings.SettingInstance import SettingInstance
-
-from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from cura.Scene.CuraSceneNode import CuraSceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene.ToolHandle import ToolHandle
 from UM.Tool import Tool
-
-import os.path 
-import math
-import numpy as np
-
+from UM.Version import Version
 from UM.Resources import Resources
 from UM.i18n import i18nCatalog
 
@@ -305,7 +298,6 @@ class SpoonAntiWarping(Tool):
         
         _layer_h_i = extruder_stack.getProperty("layer_height_0", "value")
         _layer_height = extruder_stack.getProperty("layer_height", "value")
-        # Logger.log('d', 'layer_height_0 : ' + str(_layer_h_i))
         _layer_h = (_layer_h_i * 1.2) + (_layer_height * (self._Nb_Layer -1) )
 
         key = "adhesion_type"
@@ -569,13 +561,10 @@ class SpoonAntiWarping(Tool):
         else:        
             for node in DepthFirstIterator(self._application.getController().getScene().getRoot()):
                 if node.callDecoration("isSliceable"):
-                    # N_Name=node.getName()
-                    # Logger.log('d', 'isSliceable : ' + str(N_Name))
                     node_stack=node.callDecoration("getStack")           
                     if node_stack:        
                         if node_stack.getProperty("spoon_mesh", "value"):
-                            # N_Name=node.getName()
-                            # Logger.log('d', 'spoon_mesh : ' + str(N_Name)) 
+                            # Logger.log('d', "spoon_mesh : {}".format(node.getName())) 
                             self._removeSpoonMesh(node)
  
     # Source code from MeshTools Plugin 
@@ -602,7 +591,6 @@ class SpoonAntiWarping(Tool):
         min_lght = 9999999.999
         # Set on the build plate for distance
         calc_position = Vector(act_position.x, 0, act_position.z)
-        # Logger.log('d', "Mesh : {}".format(Cname))
         # Logger.log('d', "Position : {}".format(calc_position))
 
         nodes_list = self._getAllSelectedNodes()
@@ -634,11 +622,9 @@ class SpoonAntiWarping(Tool):
                         Start_Id=0
                         End_Id=0
                         for point in points:                               
-                            # Logger.log('d', "X : {}".format(point[0]))
                             # Logger.log('d', "Point : {}".format(point))
                             new_position = Vector(point[0], 0, point[1])
                             lg=calc_position-new_position
-                            # Logger.log('d', "Lg : {}".format(lg))
                             # lght = lg.length()
                             lght = round(lg.length(),0)
 
@@ -647,7 +633,6 @@ class SpoonAntiWarping(Tool):
                                 Start_Id=Id
                                 Select_position = new_position
                                 unit_vector2 = lg.normalized()
-                                #Logger.log('d', "unit_vector2 : {}".format(unit_vector2))
                                 LeSin = math.asin(ref.dot(unit_vector2))
                                 #LeCos = math.acos(ref.dot(unit_vector2))
                                 
@@ -667,13 +652,10 @@ class SpoonAntiWarping(Tool):
                         
                         # Could be the case with automatic .. rarely in pickpoint   
                         if Start_Id != End_Id :
-                            # Logger.log('d', "Possibility   : {} / {}".format(Start_Id,End_Id))
                             Id=int(Start_Id+0.5*(End_Id-Start_Id))
-                            # Logger.log('d', "Id   : {}".format(Id))
                             new_position = Vector(points[Id][0], 0, points[Id][1])
                             lg=calc_position-new_position                            
                             unit_vector2 = lg.normalized()
-                            # Logger.log('d', "unit_vector2 : {}".format(unit_vector2))
                             LeSin = math.asin(ref.dot(unit_vector2))
                             # LeCos = math.acos(ref.dot(unit_vector2))
                             
@@ -767,7 +749,7 @@ class SpoonAntiWarping(Tool):
 
     def getSMsg(self) -> bool:
         """ 
-            return: golabl _SMsg  as text paramater.
+            return: global _SMsg  as text paramater.
         """ 
         return self._SMsg
     
@@ -779,7 +761,7 @@ class SpoonAntiWarping(Tool):
         
     def getSSize(self) -> float:
         """ 
-            return: golabl _UseSize  in mm.
+            return: global _UseSize  in mm.
         """           
         return self._UseSize
   
@@ -801,7 +783,7 @@ class SpoonAntiWarping(Tool):
         
     def getSLength(self) -> float:
         """ 
-            return: golabl _UseLength  in mm.
+            return: global _UseLength  in mm.
         """           
         return self._UseLength
   
@@ -823,7 +805,7 @@ class SpoonAntiWarping(Tool):
 
     def getSWidth(self) -> float:
         """ 
-            return: golabl _UseWidth  in mm.
+            return: global _UseWidth  in mm.
         """           
         return self._UseWidth
   
@@ -845,7 +827,7 @@ class SpoonAntiWarping(Tool):
 
     def getNLayer(self) -> int:
         """ 
-            return: golabl _Nb_Layer
+            return: global _Nb_Layer
         """           
         return self._Nb_Layer
   
