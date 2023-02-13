@@ -178,7 +178,7 @@ Item
 
 		TextField
         {
-            id: widthTextField
+            id: initialTextField
             width: UM.Theme.getSize("setting_control").width
             height: UM.Theme.getSize("setting_control").height
             property string unit: "mm/s"
