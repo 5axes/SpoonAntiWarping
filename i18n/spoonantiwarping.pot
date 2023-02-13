@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spoon Anti-Warping\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-10 09:46+0000\n"
+"POT-Creation-Date: 2023-02-13 10:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,35 +17,35 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: SpoonAntiWarping.py:93 SpoonAntiWarping.py:185 SpoonAntiWarping.py:559
-#: SpoonAntiWarping.py:687
+#: SpoonAntiWarping.py:96 SpoonAntiWarping.py:191 SpoonAntiWarping.py:573
+#: SpoonAntiWarping.py:701
 msgctxt "@label"
 msgid "Remove All"
 msgstr ""
 
-#: SpoonAntiWarping.py:311
+#: SpoonAntiWarping.py:317
 msgctxt "@info:label"
 msgid "Info modification current profile '"
 msgstr ""
 
-#: SpoonAntiWarping.py:311
+#: SpoonAntiWarping.py:317
 msgctxt "@info:label"
 msgid ""
 "' parameter\n"
 "New value : "
 msgstr ""
 
-#: SpoonAntiWarping.py:311
+#: SpoonAntiWarping.py:317
 msgctxt "@info:label"
 msgid "Skirt"
 msgstr ""
 
-#: SpoonAntiWarping.py:312
+#: SpoonAntiWarping.py:318
 msgctxt "@info:title"
 msgid "Warning ! Spoon Anti-Warping"
 msgstr ""
 
-#: SpoonAntiWarping.py:366
+#: SpoonAntiWarping.py:380
 msgctxt "@label"
 msgid "Remove Last"
 msgstr ""
@@ -60,27 +60,32 @@ msgctxt "@info:tooltip"
 msgid "Add Automatique Anti-Warping Spoon"
 msgstr ""
 
-#: qml_qt6/CustomTap.qml:44 qml_qt5/CustomTap.qml:41
+#: qml_qt6/CustomSpoon.qml:45 qml_qt5/CustomSpoon.qml:42
 msgctxt "@label"
 msgid "Diameter"
 msgstr ""
 
-#: qml_qt6/CustomTap.qml:76 qml_qt5/CustomTap.qml:52
+#: qml_qt6/CustomSpoon.qml:77 qml_qt5/CustomSpoon.qml:53
 msgctxt "@label"
 msgid "Spoon Handle Length"
 msgstr ""
 
-#: qml_qt6/CustomTap.qml:108 qml_qt5/CustomTap.qml:63
+#: qml_qt6/CustomSpoon.qml:109 qml_qt5/CustomSpoon.qml:64
 msgctxt "@label"
 msgid "Spoon Handle Width"
 msgstr ""
 
-#: qml_qt6/CustomTap.qml:140 qml_qt5/CustomTap.qml:74
+#: qml_qt6/CustomSpoon.qml:141 qml_qt5/CustomSpoon.qml:75
 msgctxt "@label"
 msgid "Number of layers"
 msgstr ""
 
-#: qml_qt6/CustomTap.qml:207 qml_qt5/CustomTap.qml:204
+#: qml_qt6/CustomSpoon.qml:170 qml_qt5/CustomSpoon.qml:86
+msgctxt "@label"
+msgid "Initial Layer Speed"
+msgstr ""
+
+#: qml_qt6/CustomSpoon.qml:238 qml_qt5/CustomSpoon.qml:238
 msgctxt "@label"
 msgid "Automatic Addition"
 msgstr ""
