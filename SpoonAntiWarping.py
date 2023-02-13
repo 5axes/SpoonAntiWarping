@@ -15,6 +15,8 @@
 # V0.0.5 03-02-2023 Reset data for delete tabs on a new fileload
 # V0.0.6 07-02-2023 Change position of Angle calculation
 # V0.0.7 09-02-2023 Clean the code and Online on Ultimaker Market
+# V1.0.0 12-02-2023 Change to 1.0.0 after online Ultimaker Market
+# V1.0.1 12-02-2023 Add option for Initial Layer Speed for the spoon ( If Speed >0 )
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
@@ -88,6 +90,7 @@ class SpoonAntiWarping(Tool):
         self._UseSize = 10.0
         self._UseLength = 2.0
         self._UseWidth = 2.0
+        self._InitialLayerSpeed = 0.0
         self._Nb_Layer = 1
         self._Mesg = False # To avoid message 
         self._SMsg = catalog.i18nc("@label", "Remove All") 
@@ -127,7 +130,7 @@ class SpoonAntiWarping(Tool):
             except:
                 pass
         
-        self.setExposedProperties("SSize", "SLength", "SWidth", "NLayer", "SMsg" )
+        self.setExposedProperties("SSize", "SLength", "SWidth", "NLayer", "ISpeed", "SMsg" )
         
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
          
@@ -158,6 +161,9 @@ class SpoonAntiWarping(Tool):
         # convert as float to avoid further issue
         self._UseWidth = float(self._preferences.getValue("spoon_anti_warping/s_width"))
 
+        self._preferences.addPreference("spoon_anti_warping/s_initial_layer_speed", 0)
+        self._InitialLayerSpeed = float(self._preferences.getValue("spoon_anti_warping/s_initial_layer_speed"))
+        
         self._preferences.addPreference("spoon_anti_warping/nb_layer", 1)
         # convert as float to avoid further issue
         self._Nb_Layer = int(self._preferences.getValue("spoon_anti_warping/nb_layer"))       
@@ -336,6 +342,14 @@ class SpoonAntiWarping(Tool):
         new_instance.setProperty("value", False)
         new_instance.resetState()  # Ensure that the state is not seen as a user state.
         settings.addInstance(new_instance)
+        
+        # speed_layer_0
+        if self._InitialLayerSpeed > 0 :
+            definition = stack.getSettingDefinition("speed_layer_0")
+            new_instance = SettingInstance(definition, settings)
+            new_instance.setProperty("value", self._InitialLayerSpeed) # initial layer speed
+            new_instance.resetState()  # Ensure that the state is not seen as a user state.
+            settings.addInstance(new_instance)   
         
         definition = stack.getSettingDefinition("infill_mesh_order")
         new_instance = SettingInstance(definition, settings)
@@ -811,7 +825,7 @@ class SpoonAntiWarping(Tool):
   
     def setSWidth(self, SWidth: str) -> None:
         """
-        param SWidth : SWidth in mm.
+        param SWidth : Width in mm.
         """
  
         try:
@@ -825,6 +839,28 @@ class SpoonAntiWarping(Tool):
         self._UseWidth = s_value
         self._preferences.setValue("spoon_anti_warping/s_width", s_value) 
 
+    def getISpeed(self) -> float:
+        """ 
+            return: global _InitialLayerSpeed  in mm/s.
+        """           
+        return self._InitialLayerSpeed
+  
+    def setISpeed(self, ISpeed: str) -> None:
+        """
+        param ISpeed : ISpeed in mm/s.
+        """
+ 
+        try:
+            s_value = float(ISpeed)
+        except ValueError:
+            return
+
+        if s_value < 0:
+            return         
+        #Logger.log('d', 's_value : ' + str(s_value))     
+        self._InitialLayerSpeed = s_value
+        self._preferences.setValue("spoon_anti_warping/s_initial_layer_speed", s_value) 
+        
     def getNLayer(self) -> int:
         """ 
             return: global _Nb_Layer
