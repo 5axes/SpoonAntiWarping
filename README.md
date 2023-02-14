@@ -75,3 +75,8 @@ Even if the user does not want to use the raft for the final print, it is necess
 ### YouTube video
 
 [![Spoon Anti-Warping](http://img.youtube.com/vi/K2niowptW7M/0.jpg)](https://www.youtube.com/watch?v=K2niowptW7M)
+
+### V1.0.1
+
+[![Spoon Anti-Warping V1.0.1](http://img.youtube.com/vi/75PTshD9tfg/0.jpg)](https://www.youtube.com/watch?v=75PTshD9tfg)
+
