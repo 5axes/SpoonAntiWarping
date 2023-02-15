@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spoon Anti-Warping\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-14 10:19+0000\n"
+"POT-Creation-Date: 2023-02-15 14:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,35 +17,35 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: SpoonAntiWarping.py:96 SpoonAntiWarping.py:191 SpoonAntiWarping.py:573
-#: SpoonAntiWarping.py:701
+#: SpoonAntiWarping.py:97 SpoonAntiWarping.py:192 SpoonAntiWarping.py:574
+#: SpoonAntiWarping.py:702
 msgctxt "@label"
 msgid "Remove All"
 msgstr ""
 
-#: SpoonAntiWarping.py:317
+#: SpoonAntiWarping.py:318
 msgctxt "@info:label"
 msgid "Info modification current profile '"
 msgstr ""
 
-#: SpoonAntiWarping.py:317
+#: SpoonAntiWarping.py:318
 msgctxt "@info:label"
 msgid ""
 "' parameter\n"
 "New value : "
 msgstr ""
 
-#: SpoonAntiWarping.py:317
+#: SpoonAntiWarping.py:318
 msgctxt "@info:label"
 msgid "Skirt"
 msgstr ""
 
-#: SpoonAntiWarping.py:318
+#: SpoonAntiWarping.py:319
 msgctxt "@info:title"
 msgid "Warning ! Spoon Anti-Warping"
 msgstr ""
 
-#: SpoonAntiWarping.py:380
+#: SpoonAntiWarping.py:381
 msgctxt "@label"
 msgid "Remove Last"
 msgstr ""
@@ -85,7 +85,7 @@ msgctxt "@label"
 msgid "Initial Layer Speed"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:238 qml_qt5/CustomSpoon.qml:238
+#: qml_qt6/CustomSpoon.qml:239 qml_qt5/CustomSpoon.qml:238
 msgctxt "@label"
 msgid "Automatic Addition"
 msgstr ""
