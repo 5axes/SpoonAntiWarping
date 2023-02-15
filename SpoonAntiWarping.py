@@ -17,6 +17,7 @@
 # V0.0.7 09-02-2023 Clean the code and Online on Ultimaker Market
 # V1.0.0 12-02-2023 Change to 1.0.0 after online Ultimaker Market
 # V1.0.1 12-02-2023 Add option for Initial Layer Speed for the spoon ( If Speed >0 )
+# V1.0.2 15-02-2023 correct bug
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
@@ -855,9 +856,9 @@ class SpoonAntiWarping(Tool):
         except ValueError:
             return
 
-        if s_value < 0:
+        if s_value < 0: 
             return         
-        #Logger.log('d', 's_value : ' + str(s_value))     
+        # Logger.log('d', 'ISpeed : ' + str(s_value))     
         self._InitialLayerSpeed = s_value
         self._preferences.setValue("spoon_anti_warping/s_initial_layer_speed", s_value) 
         

@@ -186,7 +186,7 @@ Item
             text: UM.ActiveTool.properties.getValue("ISpeed")
             validator: DoubleValidator
             {
-                decimals: 2
+                decimals: 1
 				bottom: 0
                 locale: "en_US"
             }

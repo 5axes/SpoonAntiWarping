@@ -182,15 +182,16 @@ Item
             height: UM.Theme.getSize("setting_control").height
 			unit: "mm/s"
             text: UM.ActiveTool.properties.getValue("ISpeed")
-            validator: IntValidator
+            validator: DoubleValidator
             {
-				bottom: 1
-				top: 100
+                decimals: 1
+				bottom: 0
+                locale: "en_US"
             }
-
             onEditingFinished:
             {
-                UM.ActiveTool.setProperty("ISpeed", text)
+			    var modified_text = text.replace(",", ".") // User convenience. We use dots for decimal values
+                UM.ActiveTool.setProperty("ISpeed", modified_text)
             }
         }
 	}
