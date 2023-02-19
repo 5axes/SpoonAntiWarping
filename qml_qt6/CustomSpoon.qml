@@ -126,6 +126,7 @@ Item
             {
                 decimals: 2
 				bottom: 0
+				top: UM.ActiveTool.properties.getValue("SSize")
                 locale: "en_US"
             }
 
