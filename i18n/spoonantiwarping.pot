@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spoon Anti-Warping\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-15 14:13+0000\n"
+"POT-Creation-Date: 2023-02-19 23:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,39 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: SpoonAntiWarping.py:97 SpoonAntiWarping.py:192 SpoonAntiWarping.py:574
-#: SpoonAntiWarping.py:702
-msgctxt "@label"
-msgid "Remove All"
-msgstr ""
-
-#: SpoonAntiWarping.py:318
-msgctxt "@info:label"
-msgid "Info modification current profile '"
-msgstr ""
-
-#: SpoonAntiWarping.py:318
-msgctxt "@info:label"
-msgid ""
-"' parameter\n"
-"New value : "
-msgstr ""
-
-#: SpoonAntiWarping.py:318
-msgctxt "@info:label"
-msgid "Skirt"
-msgstr ""
-
-#: SpoonAntiWarping.py:319
-msgctxt "@info:title"
-msgid "Warning ! Spoon Anti-Warping"
-msgstr ""
-
-#: SpoonAntiWarping.py:381
-msgctxt "@label"
-msgid "Remove Last"
-msgstr ""
 
 #: __init__.py:23
 msgctxt "@label"
@@ -60,32 +27,70 @@ msgctxt "@info:tooltip"
 msgid "Add Automatique Anti-Warping Spoon"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:45 qml_qt5/CustomSpoon.qml:42
+#: SpoonAntiWarping.py:99 SpoonAntiWarping.py:198 SpoonAntiWarping.py:650
+#: SpoonAntiWarping.py:778
+msgctxt "@label"
+msgid "Remove All"
+msgstr ""
+
+#: SpoonAntiWarping.py:324
+msgctxt "@info:label"
+msgid "Info modification current profile '"
+msgstr ""
+
+#: SpoonAntiWarping.py:324
+msgctxt "@info:label"
+msgid ""
+"' parameter\n"
+"New value : "
+msgstr ""
+
+#: SpoonAntiWarping.py:324
+msgctxt "@info:label"
+msgid "Skirt"
+msgstr ""
+
+#: SpoonAntiWarping.py:325
+msgctxt "@info:title"
+msgid "Warning ! Spoon Anti-Warping"
+msgstr ""
+
+#: SpoonAntiWarping.py:387
+msgctxt "@label"
+msgid "Remove Last"
+msgstr ""
+
+#: qml_qt6/CustomSpoon.qml:46 qml_qt5/CustomSpoon.qml:43
 msgctxt "@label"
 msgid "Diameter"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:77 qml_qt5/CustomSpoon.qml:53
+#: qml_qt6/CustomSpoon.qml:78 qml_qt5/CustomSpoon.qml:54
 msgctxt "@label"
 msgid "Spoon Handle Length"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:109 qml_qt5/CustomSpoon.qml:64
+#: qml_qt6/CustomSpoon.qml:110 qml_qt5/CustomSpoon.qml:65
 msgctxt "@label"
 msgid "Spoon Handle Width"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:141 qml_qt5/CustomSpoon.qml:75
+#: qml_qt6/CustomSpoon.qml:142 qml_qt5/CustomSpoon.qml:76
 msgctxt "@label"
 msgid "Number of layers"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:170 qml_qt5/CustomSpoon.qml:86
+#: qml_qt6/CustomSpoon.qml:171 qml_qt5/CustomSpoon.qml:87
 msgctxt "@label"
 msgid "Initial Layer Speed"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:239 qml_qt5/CustomSpoon.qml:238
+#: qml_qt6/CustomSpoon.qml:200 qml_qt5/CustomSpoon.qml:203
+msgctxt "@option:check"
+msgid "Direct shape"
+msgstr ""
+
+#: qml_qt6/CustomSpoon.qml:248 qml_qt5/CustomSpoon.qml:247
 msgctxt "@label"
 msgid "Automatic Addition"
 msgstr ""
