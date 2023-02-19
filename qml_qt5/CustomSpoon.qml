@@ -199,19 +199,22 @@ Item
                 UM.ActiveTool.setProperty("ISpeed", modified_text)
             }
         }	
-
-		CheckBox {
-			text: catalog.i18nc("@option:check","Direct shape")
-			checked: UM.ActiveTool.properties.getValue("DirectShape")
-			onClicked: {
-				UM.ActiveTool.setProperty("DirectShape", checked)
-			}
-		}			
+			
     }
-	
+
+	CheckBox {
+	    id: dshapeCheck
+		anchors.top: textfields.bottom 
+		text: catalog.i18nc("@option:check","Direct shape")
+		checked: UM.ActiveTool.properties.getValue("DirectShape")
+		onClicked: {
+			UM.ActiveTool.setProperty("DirectShape", checked)
+		}
+	}
+		
 	Rectangle {
         id: topRect
-        anchors.top: textfields.bottom 
+        anchors.top: dshapeCheck.bottom 
 		color: "#00000000"
 		width: UM.Theme.getSize("setting_control").width * 1.3
 		height: UM.Theme.getSize("setting_control").height 
