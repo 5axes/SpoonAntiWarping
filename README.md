@@ -75,7 +75,7 @@ Even if the user does not want to use the raft for the final print, it is necess
 
 ### V1.1.0
 
-New Option Direct Shape.
+New Option **Direct Shape**.
 
 ![Direct shape option](https://github.com/5axes/SpoonAntiWarping/blob/main/images/direct_shape.png)
 
