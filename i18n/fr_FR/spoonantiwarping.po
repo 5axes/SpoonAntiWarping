@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spoon Anti-Warping\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-19 23:00+0000\n"
-"PO-Revision-Date: 2023-02-20 00:06+0200\n"
+"POT-Creation-Date: 2023-02-19 23:38+0000\n"
+"PO-Revision-Date: 2023-02-20 00:42+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -77,22 +77,22 @@ msgctxt "@label"
 msgid "Spoon Handle Width"
 msgstr "Largeur Attache"
 
-#: qml_qt6/CustomSpoon.qml:142 qml_qt5/CustomSpoon.qml:76
+#: qml_qt6/CustomSpoon.qml:143 qml_qt5/CustomSpoon.qml:76
 msgctxt "@label"
 msgid "Number of layers"
 msgstr "Nombre de couches"
 
-#: qml_qt6/CustomSpoon.qml:171 qml_qt5/CustomSpoon.qml:87
+#: qml_qt6/CustomSpoon.qml:172 qml_qt5/CustomSpoon.qml:87
 msgctxt "@label"
 msgid "Initial Layer Speed"
 msgstr "Vitesse Couche Initiale"
 
-#: qml_qt6/CustomSpoon.qml:200 qml_qt5/CustomSpoon.qml:203
+#: qml_qt6/CustomSpoon.qml:201 qml_qt5/CustomSpoon.qml:208
 msgctxt "@option:check"
 msgid "Direct shape"
 msgstr "Forme directe"
 
-#: qml_qt6/CustomSpoon.qml:248 qml_qt5/CustomSpoon.qml:247
+#: qml_qt6/CustomSpoon.qml:249 qml_qt5/CustomSpoon.qml:251
 msgctxt "@label"
 msgid "Automatic Addition"
 msgstr "Ajout Automatique"
