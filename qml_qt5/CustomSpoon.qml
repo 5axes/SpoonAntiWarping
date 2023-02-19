@@ -3,12 +3,13 @@
 // Copyright (c) 2023 5@xes
 // 
 // proterties values
-//   "SSize"    : Tab Size in mm
-//   "SLength"  : Length set for Tab in mm
-//   "SWidth"   : Width set for Tab in mm
-//   "NLayer"   : Number of layer
-//   "ISpeed"   : Initial Speed in mm/s
-//   "SMsg"     : Text for the Remove All Button
+//   "SSize"       : Tab Size in mm
+//   "SLength"     : Length set for Tab in mm
+//   "SWidth"      : Width set for Tab in mm
+//   "NLayer"      : Number of layer
+//   "ISpeed"      : Initial Speed in mm/s
+//   "DirectShape" : Direct shape
+//   "SMsg"        : Text for the Remove All Button
 //
 //-----------------------------------------------------------------------------
 
@@ -196,7 +197,15 @@ Item
                 var modified_text = text.replace(",", ".") // User convenience. We use dots for decimal values
                 UM.ActiveTool.setProperty("ISpeed", modified_text)
             }
-        }		
+        }	
+
+		CheckBox {
+			text: catalog.i18nc("@option:check","Direct shape")
+			checked: UM.ActiveTool.properties.getValue("DirectShape")
+			onClicked: {
+				UM.ActiveTool.setProperty("DirectShape", checked)
+			}
+		}			
     }
 	
 	Rectangle {

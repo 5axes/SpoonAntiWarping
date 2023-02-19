@@ -18,6 +18,7 @@
 # V1.0.0 12-02-2023 Change to 1.0.0 after online Ultimaker Market
 # V1.0.1 12-02-2023 Add option for Initial Layer Speed for the spoon ( If Speed >0 )
 # V1.0.2 15-02-2023 correct bug
+# V1.1.0 20-02-2023 Define as direct shape
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
@@ -94,6 +95,7 @@ class SpoonAntiWarping(Tool):
         self._InitialLayerSpeed = 0.0
         self._Nb_Layer = 1
         self._Mesg = False # To avoid message 
+        self._direct_shape = False
         self._SMsg = catalog.i18nc("@label", "Remove All") 
 
         # Shortcut
@@ -131,7 +133,7 @@ class SpoonAntiWarping(Tool):
             except:
                 pass
         
-        self.setExposedProperties("SSize", "SLength", "SWidth", "NLayer", "ISpeed", "SMsg" )
+        self.setExposedProperties("SSize", "SLength", "SWidth", "NLayer", "ISpeed", "DirectShape", "SMsg" )
         
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
          
@@ -168,6 +170,10 @@ class SpoonAntiWarping(Tool):
         self._preferences.addPreference("spoon_anti_warping/nb_layer", 1)
         # convert as float to avoid further issue
         self._Nb_Layer = int(self._preferences.getValue("spoon_anti_warping/nb_layer"))       
+
+        self._preferences.addPreference("spoon_anti_warping/direct_shape", False)
+        # convert as bool to avoid further issue
+        self._direct_shape = bool(self._preferences.getValue("spoon_anti_warping/direct_shape")) 
 
         # Define a new settings "spoon_mesh""
         self._settings_dict = OrderedDict()
@@ -326,7 +332,7 @@ class SpoonAntiWarping(Tool):
         # Logger.log('d', "Info createSpoonMesh Angle --> " + str(_angle))
                 
         # Spoon creation Diameter , Length, Width, Increment angle 10°, length, layer_height_0*1.2
-        mesh = self._createSpoon(self._UseSize,self._UseLength,self._UseWidth, 10,_long,_layer_h , _angle)
+        mesh = self._createSpoon(self._UseSize,self._UseLength,self._UseWidth, 10,_long,_layer_h , self._direct_shape, _angle)
         
         # new_transformation = Matrix()
         node.setMeshData(mesh.build())
@@ -421,10 +427,37 @@ class SpoonAntiWarping(Tool):
             self._skip_press = False
 
         self._had_selection = has_selection
- 
+
+    def _tangential_point_on_circle(self,center, radius, point_fixe):
+        # Calculation of the distance between point_fix and (center[0], center[1])
+        d = math.sqrt((center[0] - point_fixe[0])**2 + (center[1] - point_fixe[1])**2)
+
+        # Search for the points of tangency of the line with the circle
+        tangency_points = []
+
+        # If point_fix is on the circle, there is only one point of tangency
+        if d == radius:
+            tangency_points.append(point_fixe[0])
+            tangency_points.append(point_fixe[1])
+           
+        else:
+            p = math.sqrt( d**2-radius**2)
+            # Calculation of the angle between the line and the radius of the circle passing through the point of tangency
+            theta = math.asin(radius / d)
+            # Calculation of the angle of the line
+            alpha = math.atan2(center[1] - point_fixe[1] , center[0] - point_fixe[0] )
+            # Calculation of the angles of the two rays passing through the points of tangency
+            beta1 = alpha + theta
+            beta2 = alpha - theta
+            # Calculation of the coordinates of the tangency points
+            tx1 = center[0] - radius* math.sin(beta1)
+            ty1 = center[1] + radius* math.cos(beta1)
+            tangency_points.append(tx1)
+            tangency_points.append(ty1)
+        return tangency_points
         
     # SPOON creation
-    def _createSpoon(self, size , length , width , nb , lg, He , angle):   
+    def _createSpoon(self, size , length , width , nb , lg, He ,direct_shape ,angle):   
         mesh = MeshBuilder()
         # Per-vertex normals require duplication of vertices
         r = size / 2
@@ -441,25 +474,32 @@ class SpoonAntiWarping(Tool):
         s_sup = width / 2
         s_inf = s_sup
         
-        """
-        nbv=24 
-        verts = [ # 6 faces with 4 corners each
-            [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ length,  sup,  s_sup], [ length, l,  s_inf],
-            [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ length, l, -s_inf], [ length,  sup, -s_sup],
-            [ length, l, -s_inf], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ length, l,  s_inf],
-            [-s_sup,  sup, -s_sup], [ length,  sup, -s_sup], [ length,  sup,  s_sup], [-s_sup,  sup,  s_sup],
-            [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup],
-            [ length, l, -s_inf], [ length, l,  s_inf], [ length,  sup,  s_sup], [ length,  sup, -s_sup]
-        ]
-        """
-        nbv=20 
-        verts = [ # 5 faces with 4 corners each
-            [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ length,  sup,  s_sup], [ length, l,  s_inf],
-            [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ length, l, -s_inf], [ length,  sup, -s_sup],
-            [ length, l, -s_inf], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ length, l,  s_inf],
-            [-s_sup,  sup, -s_sup], [ length,  sup, -s_sup], [ length,  sup,  s_sup], [-s_sup,  sup,  s_sup],
-            [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup]
-        ]               
+        if direct_shape :
+            p = [0,s_sup]
+            c = [(r+length),0]
+            result = self._tangential_point_on_circle(c,r,p)
+            Logger.log('d', "Point tangence : {}".format(result))
+            nbv=20 
+            verts = [ # 5 faces with 4 corners each
+                [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ result[0],  sup,  result[1]], [ result[0], l,  result[1]],
+                [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ result[0], l, -result[1]], [ result[0],  sup, -result[1]],
+                [ result[0], l, -result[1]], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ result[0], l,  result[1]],
+                [-s_sup,  sup, -s_sup], [ result[0],  sup, -result[1]], [ result[0],  sup,  result[1]], [-s_sup,  sup,  s_sup],
+                [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup]
+            ]
+            max_val=result[1]
+            max_l=result[0]
+        else:
+            nbv=20 
+            verts = [ # 5 faces with 4 corners each
+                [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ length,  sup,  s_sup], [ length, l,  s_inf],
+                [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ length, l, -s_inf], [ length,  sup, -s_sup],
+                [ length, l, -s_inf], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ length, l,  s_inf],
+                [-s_sup,  sup, -s_sup], [ length,  sup, -s_sup], [ length,  sup,  s_sup], [-s_sup,  sup,  s_sup],
+                [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup]
+            ] 
+            max_val=s_sup
+            max_l=length
         
         # Add Round Part of the Spoon
         nbvr = 0
@@ -467,7 +507,7 @@ class SpoonAntiWarping(Tool):
         remain2 = 0
 
         for i in range(0, rng):
-            if (r*math.cos((i+1)*ang)) >= 0 or (abs(r*math.sin((i+1)*ang)) > s_sup and abs(r*math.sin(i*ang)) > s_sup)  :
+            if (r*math.cos((i+1)*ang)) >= 0 or (abs(r*math.sin((i+1)*ang)) > max_val and abs(r*math.sin(i*ang)) > max_val)  :
                 nbvr += 1
                 # Top
                 verts.append([length+r, sup, 0])
@@ -490,53 +530,89 @@ class SpoonAntiWarping(Tool):
                     remain1 = i*ang
                     remain2 = 2*math.pi-remain1
                     
-                    nbvr += 1
-                    # Top
-                    verts.append([length+r, sup, 0])
-                    verts.append([length, sup, s_sup])
-                    verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
-                    #Side 1a
-                    verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
-                    verts.append([length, sup, s_sup])
-                    verts.append([length, l, s_inf])
-                    #Side 1b
-                    verts.append([length, l, s_inf])
-                    verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
-                    verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
-                    #Bottom 
-                    verts.append([length+r, l, 0])
-                    verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
-                    verts.append([length, l, s_inf])  
-                    
-                    nbvr += 1 
-                    # Top
-                    verts.append([length+r, sup, 0])
-                    verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
-                    verts.append([length, sup, -s_sup])
-                    #Side 1a
-                    verts.append([length, sup, -s_sup])
-                    verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
-                    verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
-                    #Side 1b
-                    verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
-                    verts.append([length, l, -s_inf])
-                    verts.append([length, sup, -s_sup])
-                    #Bottom 
-                    verts.append([length+r, l, 0])
-                    verts.append([length, l, -s_inf])
-                    verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)]) 
-                                   
+                    if direct_shape :
+                        nbvr += 1
+                        # Top
+                        verts.append([length+r, sup, 0])
+                        verts.append([max_l, sup, max_val])
+                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                        #Side 1a
+                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                        verts.append([max_l, sup, max_val])
+                        verts.append([max_l, l, max_val])
+                        #Side 1b
+                        verts.append([max_l, l, max_val])
+                        verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
+                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                        #Bottom 
+                        verts.append([length+r, l, 0])
+                        verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
+                        verts.append([max_l, l, max_val])  
+                        
+                        nbvr += 1 
+                        # Top
+                        verts.append([length+r, sup, 0])
+                        verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
+                        verts.append([max_l, sup, -max_val])
+                        #Side 1a
+                        verts.append([max_l, sup, -max_val])
+                        verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
+                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
+                        #Side 1b
+                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
+                        verts.append([max_l, l, -max_val])
+                        verts.append([max_l, sup, -max_val])
+                        #Bottom 
+                        verts.append([length+r, l, 0])
+                        verts.append([max_l, l, -max_val])
+                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)]) 
+                    else:
+                        nbvr += 1
+                        # Top
+                        verts.append([length+r, sup, 0])
+                        verts.append([length, sup, max_val])
+                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                        #Side 1a
+                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                        verts.append([length, sup, max_val])
+                        verts.append([length, l, max_val])
+                        #Side 1b
+                        verts.append([length, l, max_val])
+                        verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
+                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                        #Bottom 
+                        verts.append([length+r, l, 0])
+                        verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
+                        verts.append([length, l, max_val])  
+                        
+                        nbvr += 1 
+                        # Top
+                        verts.append([length+r, sup, 0])
+                        verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
+                        verts.append([length, sup, -max_val])
+                        #Side 1a
+                        verts.append([length, sup, -max_val])
+                        verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
+                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
+                        #Side 1b
+                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
+                        verts.append([length, l, -max_val])
+                        verts.append([length, sup, -max_val])
+                        #Bottom 
+                        verts.append([length+r, l, 0])
+                        verts.append([length, l, -max_val])
+                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])                         
        
         # Add link part between handle and Round Part
         # Top center
-        verts.append([length, sup, s_sup])
+        verts.append([max_l, sup, max_val])
         verts.append([length+r, sup, 0])
-        verts.append([length, sup, -s_sup])
+        verts.append([max_l, sup, -max_val])
         
         # Bottom  center
-        verts.append([length, l, -s_inf])
+        verts.append([max_l, l, -max_val])
         verts.append([length+r, l, 0])
-        verts.append([length, l, s_inf])
+        verts.append([max_l, l, max_val])
 
         # Rotate the mesh
         tot = nbvr * 12 + 6 + nbv 
@@ -885,3 +961,12 @@ class SpoonAntiWarping(Tool):
         #Logger.log('d', 'i_value : ' + str(i_value))        
         self._Nb_Layer = i_value
         self._preferences.setValue("spoon_anti_warping/nb_layer", i_value)
+
+    def getDirectShape(self )-> bool:
+        return self._direct_shape
+
+    def setDirectShape(self, value: bool) -> None:
+        # Logger.log("w", "setDirectShape {}".format(value))
+        self._direct_shape = value
+        self.propertyChanged.emit()
+        self._preferences.setValue("spoon_anti_warping/direct_shape", self._direct_shape)
