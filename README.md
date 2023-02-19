@@ -71,7 +71,7 @@ In order for the Spoon Anti-warping plugin to work correctly in the Cura slicing
 
 Even if the user does not want to use the raft for the final print, it is necessary to have it enabled while using the Spoon Anti-warping plugin. The plugin uses the these border to calculate the tab orientation. Once the tabs creation is complete, you can remove this option if you don't want anay adherence option creation in the final print.
 
-### Modifications
+## Modifications
 
 ### V1.1.0
 
@@ -80,7 +80,7 @@ New Option **Direct Shape**.
 ![Direct shape option](https://github.com/5axes/SpoonAntiWarping/blob/main/images/direct_shape.png)
 
 
-### YouTube video
+## YouTube video
 
 [![Spoon Anti-Warping](http://img.youtube.com/vi/K2niowptW7M/0.jpg)](https://www.youtube.com/watch?v=K2niowptW7M)
 
