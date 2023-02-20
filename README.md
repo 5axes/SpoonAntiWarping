@@ -88,3 +88,7 @@ New Option **Direct Shape**.
 
 [![Spoon Anti-Warping V1.0.1](http://img.youtube.com/vi/75PTshD9tfg/0.jpg)](https://www.youtube.com/watch?v=75PTshD9tfg)
 
+### V1.1.0
+
+[![Spoon Anti-Warping V1.0.1](http://img.youtube.com/vi/UeW1CHHmqQE/0.jpg)](https://www.youtube.com/watch?v=UeW1CHHmqQE)
+
