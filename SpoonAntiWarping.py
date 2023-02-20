@@ -478,29 +478,23 @@ class SpoonAntiWarping(Tool):
             p = [-s_sup,s_sup]
             c = [(r+length),0]
             result = self._tangential_point_on_circle(c,r,p)
-            Logger.log('d', "Point tangence : {}".format(result))
-            nbv=20 
-            verts = [ # 5 faces with 4 corners each
-                [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ result[0],  sup,  result[1]], [ result[0], l,  result[1]],
-                [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ result[0], l, -result[1]], [ result[0],  sup, -result[1]],
-                [ result[0], l, -result[1]], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ result[0], l,  result[1]],
-                [-s_sup,  sup, -s_sup], [ result[0],  sup, -result[1]], [ result[0],  sup,  result[1]], [-s_sup,  sup,  s_sup],
-                [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup]
-            ]
+            # Logger.log('d', "Point tangence : {}".format(result))
+
             max_val=result[1]
             max_l=result[0]
         else:
-            nbv=20 
-            verts = [ # 5 faces with 4 corners each
-                [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ length,  sup,  s_sup], [ length, l,  s_inf],
-                [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ length, l, -s_inf], [ length,  sup, -s_sup],
-                [ length, l, -s_inf], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ length, l,  s_inf],
-                [-s_sup,  sup, -s_sup], [ length,  sup, -s_sup], [ length,  sup,  s_sup], [-s_sup,  sup,  s_sup],
-                [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup]
-            ] 
             max_val=s_sup
             max_l=length
-        
+ 
+        nbv=20 
+        verts = [ # 5 faces with 4 corners each
+            [-s_inf, l,  s_inf], [-s_sup,  sup,  s_sup], [ max_l,  sup,  max_val], [ max_l, l,  max_val],
+            [-s_sup,  sup, -s_sup], [-s_inf, l, -s_inf], [ max_l, l, -max_val], [ max_l,  sup, -max_val],
+            [ max_l, l, -max_val], [-s_inf, l, -s_inf], [-s_inf, l,  s_inf], [ max_l, l,  max_val],
+            [-s_sup,  sup, -s_sup], [ max_l,  sup, -max_val], [ max_l,  sup,  max_val], [-s_sup,  sup,  s_sup],
+            [-s_inf, l,  s_inf], [-s_inf, l, -s_inf], [-s_sup,  sup, -s_sup], [-s_sup,  sup,  s_sup]
+        ]
+            
         # Add Round Part of the Spoon
         nbvr = 0
         remain1 = 0
