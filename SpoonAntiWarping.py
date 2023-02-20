@@ -475,7 +475,7 @@ class SpoonAntiWarping(Tool):
         s_inf = s_sup
         
         if direct_shape :
-            p = [0,s_sup]
+            p = [-s_sup,s_sup]
             c = [(r+length),0]
             result = self._tangential_point_on_circle(c,r,p)
             Logger.log('d', "Point tangence : {}".format(result))
@@ -531,77 +531,46 @@ class SpoonAntiWarping(Tool):
                     remain2 = 2*math.pi-remain1
                     
                     if direct_shape :
-                        nbvr += 1
-                        # Top
-                        verts.append([length+r, sup, 0])
-                        verts.append([max_l, sup, max_val])
-                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
-                        #Side 1a
-                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
-                        verts.append([max_l, sup, max_val])
-                        verts.append([max_l, l, max_val])
-                        #Side 1b
-                        verts.append([max_l, l, max_val])
-                        verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
-                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
-                        #Bottom 
-                        verts.append([length+r, l, 0])
-                        verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
-                        verts.append([max_l, l, max_val])  
-                        
-                        nbvr += 1 
-                        # Top
-                        verts.append([length+r, sup, 0])
-                        verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
-                        verts.append([max_l, sup, -max_val])
-                        #Side 1a
-                        verts.append([max_l, sup, -max_val])
-                        verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
-                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
-                        #Side 1b
-                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
-                        verts.append([max_l, l, -max_val])
-                        verts.append([max_l, sup, -max_val])
-                        #Bottom 
-                        verts.append([length+r, l, 0])
-                        verts.append([max_l, l, -max_val])
-                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)]) 
+                        lg = max_l
                     else:
-                        nbvr += 1
-                        # Top
-                        verts.append([length+r, sup, 0])
-                        verts.append([length, sup, max_val])
-                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
-                        #Side 1a
-                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
-                        verts.append([length, sup, max_val])
-                        verts.append([length, l, max_val])
-                        #Side 1b
-                        verts.append([length, l, max_val])
-                        verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
-                        verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
-                        #Bottom 
-                        verts.append([length+r, l, 0])
-                        verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
-                        verts.append([length, l, max_val])  
+                        lg = length
                         
-                        nbvr += 1 
-                        # Top
-                        verts.append([length+r, sup, 0])
-                        verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
-                        verts.append([length, sup, -max_val])
-                        #Side 1a
-                        verts.append([length, sup, -max_val])
-                        verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
-                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
-                        #Side 1b
-                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
-                        verts.append([length, l, -max_val])
-                        verts.append([length, sup, -max_val])
-                        #Bottom 
-                        verts.append([length+r, l, 0])
-                        verts.append([length, l, -max_val])
-                        verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])                         
+                    nbvr += 1
+                    # Top
+                    verts.append([length+r, sup, 0])
+                    verts.append([lg, sup, max_val])
+                    verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                    #Side 1a
+                    verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                    verts.append([lg, sup, max_val])
+                    verts.append([lg, l, max_val])
+                    #Side 1b
+                    verts.append([lg, l, max_val])
+                    verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
+                    verts.append([length+r+r*math.cos(remain1), sup, r*math.sin(remain1)])
+                    #Bottom 
+                    verts.append([length+r, l, 0])
+                    verts.append([length+r+r*math.cos(remain1), l, r*math.sin(remain1)])
+                    verts.append([lg, l, max_val])  
+                    
+                    nbvr += 1 
+                    # Top
+                    verts.append([length+r, sup, 0])
+                    verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
+                    verts.append([lg, sup, -max_val])
+                    #Side 1a
+                    verts.append([lg, sup, -max_val])
+                    verts.append([length+r+r*math.cos(remain2), sup, r*math.sin(remain2)])
+                    verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
+                    #Side 1b
+                    verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)])
+                    verts.append([lg, l, -max_val])
+                    verts.append([lg, sup, -max_val])
+                    #Bottom 
+                    verts.append([length+r, l, 0])
+                    verts.append([lg, l, -max_val])
+                    verts.append([length+r+r*math.cos(remain2), l, r*math.sin(remain2)]) 
+
        
         # Add link part between handle and Round Part
         # Top center
