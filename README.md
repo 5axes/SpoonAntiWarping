@@ -90,5 +90,7 @@ New Option **Direct Shape**.
 
 ### V1.1.0
 
+New Option to get a new tab shape.
+
 [![Spoon Anti-Warping V1.0.1](http://img.youtube.com/vi/UeW1CHHmqQE/0.jpg)](https://www.youtube.com/watch?v=UeW1CHHmqQE)
 
