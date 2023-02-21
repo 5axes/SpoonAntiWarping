@@ -690,8 +690,6 @@ class SpoonAntiWarping(Tool):
                             
                         points=hull_polygon.getPoints()
                         # nb_pt = point[0] / point[1] must be divided by 2
-                        # Angle Ref for angle / Y Dir
-                        ref = Vector(0, 0, 1)
                         Id=0
                         Start_Id=0
                         End_Id=0
@@ -712,8 +710,7 @@ class SpoonAntiWarping(Tool):
                                     Start_Id=Id
                                     End_Id=Id
                                 else :
-                                    End_Id=Id
-                                    
+                                    End_Id=Id                                 
                             Id+=1
                         
                         # Could be the case in pickpoint 
@@ -768,7 +765,9 @@ class SpoonAntiWarping(Tool):
                             Id=int(Start_Id+0.5*(End_Id-Start_Id))
                             # Logger.log('d', "Id : {}".format(Id))
                             Select_position = Vector(points[Id][0], 0, points[Id][1])
-              
+
+                        # Angle Ref for angle / Y Dir
+                        ref = Vector(0, 0, 1)              
                         lg=calc_position-Select_position                            
                         unit_vector2 = lg.normalized()
                         LeSin = math.asin(ref.dot(unit_vector2))
