@@ -14,9 +14,9 @@ i18n_catalog = i18nCatalog("spoonantiwarping")
 
 def getMetaData():
     if not VERSION_QT5:
-        QmlFile="qml_qt6/CustomSpoon.qml"
+        QmlFile="qml/qml_qt6/CustomSpoon.qml"
     else:
-        QmlFile="qml_qt5/CustomSpoon.qml"
+        QmlFile="qml/qml_qt5/CustomSpoon.qml"
         
     return {
         "tool": {
