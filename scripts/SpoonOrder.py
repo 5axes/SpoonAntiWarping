@@ -167,6 +167,7 @@ class SpoonOrder(Script):
 
         LayerAnalyse = int(self.getSettingValueByKey("layer"))      
         LayerAnalyse -= 1
+        Logger.log('d', "LayerAnalyse : {}".format(LayerAnalyse))
         Marker = str(self.getSettingValueByKey("marker"))           
         
         extrud = Application.getInstance().getGlobalContainerStack().extruderList
@@ -186,25 +187,24 @@ class SpoonOrder(Script):
         
         for layer in data:
             layer_index = data.index(layer)
-            # Logger.log('d', 'Layer_index founded : {}'.format(layer_index))
+            # Logger.log('d', "Layer_index founded : {}".format(layer_index))
             lines_spoon = []
             lines_not_spoon = []
             
             lines = layer.split("\n")
             for line in lines:                  
-                line_index = lines.index(line)
-                
+                # line_index = lines.index(line)
                 # Check if the line start with the Comment Char
                 if is_relative_instruction_line(line) and line[0] != ";" :
                     relative_extrusion = True
-                    # Logger.log('d', 'Relative_extrusion founded : {}'.format(line))
+                    # Logger.log('d', "Relative_extrusion founded : {}".format(line))
                 
                 # Check if the line start with the Comment Char                
                 if is_not_relative_instruction_line(line) and line[0] != ";" :
                     relative_extrusion = False
                     
                 if is_reset_extruder_line(line) and line[0] != ";" :
-                    # Logger.log('d', 'Reset_extruder :' + str(CurrentE))
+                    # Logger.log('d', "Reset_extruder :" + str(CurrentE))
                     CurrentE = 0
                     SaveE = 0
                     
@@ -219,27 +219,24 @@ class SpoonOrder(Script):
                     layercount=int(line[13:])                    
 
                 if idl >= 1 and line.startswith(";TIME_ELAPSED:"):
-                    idl=0
-                    lines_not_spoon.append(line)              
-               
+                    lines_not_spoon.append(line)
+                                             
                 # ;LAYER:X
-                if is_begin_layer_line(line):
-                    line_index = lines.index(line)    
-                    # Logger.log('d', 'layer_lines : {}'.format(line))
+                if is_begin_layer_line(line):  
+                    Logger.log('d', "layer_lines : {}".format(line))
                     currentlayer=int(line[7:])
                     if currentlayer <= LayerAnalyse :
-                        # Logger.log('d', 'CurrentLayer : {:d}'.format(currentlayer))
-                        # Logger.log('d', 'LayerAnalyse : {:d}'.format(LayerAnalyse))
+                        # Logger.log('d', "CurrentLayer : {} / {}".format(currentlayer,LayerAnalyse))
                         idl=2
                     else:
                         idl=0
                         
                 if idl >= 1 and is_begin_mesh_line(line) :               
                     if Marker in line :
-                        # Logger.log('d', 'Marker mesh : {}'.format(line))
+                        # Logger.log('d', "Marker mesh : {}".format(line))
                         idl = 2
                     else:
-                        # Logger.log('d', 'Not Marker mesh : {}'.format(line))
+                        # Logger.log('d', "Not Marker mesh : {}".format(line))
                         idl = 1
                 
                 #---------------------------------------
@@ -250,7 +247,8 @@ class SpoonOrder(Script):
                 
                 if idl == 1 :
                     lines_not_spoon.append(line)
-                     
+            
+            # Logger.log('d', "idl : {}".format(idl))
             if idl>0 :            
                 result = ";BEGIN_OF_MODIFICATION"
                 for line in lines_spoon:
