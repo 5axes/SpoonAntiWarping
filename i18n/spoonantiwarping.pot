@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spoon Anti-Warping\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-21 09:06+0000\n"
+"POT-Creation-Date: 2023-03-13 12:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,16 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: __init__.py:23
-msgctxt "@label"
-msgid "Spoon Anti-Warping"
-msgstr ""
-
-#: __init__.py:24
-msgctxt "@info:tooltip"
-msgid "Add Automatique Anti-Warping Spoon"
-msgstr ""
 
 #: SpoonAntiWarping.py:99 SpoonAntiWarping.py:198 SpoonAntiWarping.py:613
 #: SpoonAntiWarping.py:801
@@ -60,37 +50,52 @@ msgctxt "@label"
 msgid "Remove Last"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:46 qml_qt5/CustomSpoon.qml:43
+#: scripts/SpoonOrder.py:201
+msgctxt "@info:title"
+msgid "Post Processing Spoon Order"
+msgstr ""
+
+#: __init__.py:23
+msgctxt "@label"
+msgid "Spoon Anti-Warping"
+msgstr ""
+
+#: __init__.py:24
+msgctxt "@info:tooltip"
+msgid "Add Automatique Anti-Warping Spoon"
+msgstr ""
+
+#: qml_qt5/CustomSpoon.qml:43 qml_qt6/CustomSpoon.qml:46
 msgctxt "@label"
 msgid "Diameter"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:78 qml_qt5/CustomSpoon.qml:54
+#: qml_qt5/CustomSpoon.qml:54 qml_qt6/CustomSpoon.qml:78
 msgctxt "@label"
 msgid "Spoon Handle Length"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:110 qml_qt5/CustomSpoon.qml:65
+#: qml_qt5/CustomSpoon.qml:65 qml_qt6/CustomSpoon.qml:110
 msgctxt "@label"
 msgid "Spoon Handle Width"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:143 qml_qt5/CustomSpoon.qml:76
+#: qml_qt5/CustomSpoon.qml:76 qml_qt6/CustomSpoon.qml:143
 msgctxt "@label"
 msgid "Number of layers"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:172 qml_qt5/CustomSpoon.qml:87
+#: qml_qt5/CustomSpoon.qml:87 qml_qt6/CustomSpoon.qml:172
 msgctxt "@label"
 msgid "Initial Layer Speed"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:201 qml_qt5/CustomSpoon.qml:208
+#: qml_qt5/CustomSpoon.qml:208 qml_qt6/CustomSpoon.qml:201
 msgctxt "@option:check"
 msgid "Direct shape"
 msgstr ""
 
-#: qml_qt6/CustomSpoon.qml:249 qml_qt5/CustomSpoon.qml:251
+#: qml_qt5/CustomSpoon.qml:251 qml_qt6/CustomSpoon.qml:249
 msgctxt "@label"
 msgid "Automatic Addition"
 msgstr ""
