@@ -19,6 +19,7 @@
 # V1.0.1 12-02-2023 Add option for Initial Layer Speed for the spoon ( If Speed >0 )
 # V1.0.2 15-02-2023 correct bug
 # V1.1.0 20-02-2023 Define as direct shape
+# V1.1.1 13-03-2023 Change Location for I18n
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 VERSION_QT5 = False
@@ -73,7 +74,7 @@ i18n_catalog = i18nCatalog("fdmprinter.def.json")
 i18n_extrud_catalog = i18nCatalog("fdmextruder.def.json")
 
 Resources.addSearchPath(
-    os.path.join(os.path.abspath(os.path.dirname(__file__)))
+    os.path.join(os.path.abspath(os.path.dirname(__file__)),'resources')
 )  # Plugin translation file import
 
 catalog = i18nCatalog("spoonantiwarping")
