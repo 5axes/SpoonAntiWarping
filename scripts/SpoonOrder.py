@@ -2,13 +2,13 @@
 #
 # Cura PostProcessing Script
 # Author:   5axes
-# Date:     March 10, 2023
+# Date:     March 13, 2023
 #
 # Description:  SpoonOrder
 #
 #------------------------------------------------------------------------------------------------------------------------------------
 #
-#   Version 1.0 10/03/2023 first prototype right now must be use with the relative extrusion activated 
+#   Version 1.0 13/03/2023 first prototype right now must be use with the relative extrusion activated 
 #
 #------------------------------------------------------------------------------------------------------------------------------------
 
@@ -66,18 +66,6 @@ def is_begin_mesh_line(line: str) -> bool:
     """
     return line.startswith(";MESH:")
 
-    
-def is_z_line(line: str) -> bool:
-    """Check if current line is a Z line
-
-    Args:
-        line (str): Gcode line
-
-    Returns:
-        bool: True if the line is a Z line segment
-    """
-    return "G0" in line and "Z" in line and not "E" in line
-
 def is_e_line(line: str) -> bool:
     """Check if current line is a an Extruder line
 
@@ -110,17 +98,6 @@ def is_absolute_extrusion_line(line: str) -> bool:
         bool: True if the line is an absolute  extrusion line
     """
     return "M82" in line  
-    
-def is_only_extrusion_line(line: str) -> bool:
-    """Check if current line is a pure extrusion command.
-
-    Args:
-        line (str): Gcode line
-
-    Returns:
-        bool: True if the line is a pure extrusion command
-    """
-    return "G1" in line and not "X" in line and not "Y" in line and "E" in line
 
 def is_relative_instruction_line(line: str) -> bool:
     """Check if current line contain a M83 / G91 instruction
@@ -174,14 +151,12 @@ class SpoonOrder(Script):
                     "description": "Number of layer to analyse",
                     "type": "int",
                     "default_value": 1,
-                    "minimum_value": 0,
-                    "maximum_value_warning": 3,
-                    "maximum_value": 5
+                    "minimum_value": 0
                 },
                 "marker":
                 {
-                    "label": "Spoon Indentificator",
-                    "description": "Sponn Tab identificator",
+                    "label": "Spoon Identificator",
+                    "description": "Spoon Tab identificator",
                     "type": "str",
                     "default_value": "SpoonTab"
                 }               
