@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spoon Anti-Warping\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-14 10:56+0000\n"
+"POT-Creation-Date: 2023-09-18 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,21 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: resources/scripts/SpoonOrder.py:177
+msgctxt "@info:title"
+msgid "Post Processing Spoon Order"
+msgstr ""
+
+#: __init__.py:23
+msgctxt "@label"
+msgid "Spoon Anti-Warping"
+msgstr ""
+
+#: __init__.py:24
+msgctxt "@info:tooltip"
+msgid "Add Automatique Anti-Warping Spoon"
+msgstr ""
 
 #: SpoonAntiWarping.py:100 SpoonAntiWarping.py:199 SpoonAntiWarping.py:614
 #: SpoonAntiWarping.py:802
@@ -48,21 +63,6 @@ msgstr ""
 #: SpoonAntiWarping.py:388
 msgctxt "@label"
 msgid "Remove Last"
-msgstr ""
-
-#: resources/scripts/SpoonOrder.py:177
-msgctxt "@info:title"
-msgid "Post Processing Spoon Order"
-msgstr ""
-
-#: __init__.py:23
-msgctxt "@label"
-msgid "Spoon Anti-Warping"
-msgstr ""
-
-#: __init__.py:24
-msgctxt "@info:tooltip"
-msgid "Add Automatique Anti-Warping Spoon"
 msgstr ""
 
 #: qml/qml_qt5/CustomSpoon.qml:43 qml/qml_qt6/CustomSpoon.qml:46
